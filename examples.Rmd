@@ -1,0 +1,109 @@
+---
+title: "GRANAR user guide"
+author: "Adrien Heymans"
+date: "January 2019"
+output:
+  pdf_document:
+    fig_caption: yes
+header-includes:
+  - /usepackage{subfig}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/GitHub/")
+```
+
+***
+# How to use GRANAR
+
+GRANAR was built to reconstruct root cross section. It can generate root from a simple set of parameters.
+
+To run this example, the granar package is required. This package can be found on [GitHub](https://github.com/granar/granar).
+Alternatively, by simply executing the following line in the R environment:
+
+```{r echo=TRUE, eval=FALSE}
+install.packages("devtools")
+library(devtools)
+install_github("granar/granar")
+library(granar)
+```
+
+
+```{r preambule, echo=T, warning=F, message=F}
+# Load the libraries
+library(xml2)
+library(tidyverse)
+library(plyr)
+library(deldir)
+library(alphahull)
+library(viridis)
+library(cowplot)
+library(retistruct)
+library(Hmisc)
+```
+```{r, eval=T, echo= F, warning=FALSE, message=F}
+library(granar)
+```
+
+```{r}
+# Read the parameters
+params <- read_param_xml("granar_examples/modelparam/Zea_mays_Heymans_2019.xml")
+```
+
+```{r GRANAR, message = F, warning= F}
+# Run the model
+sim <- create_anatomy(parameters = params, verbatim=F)
+```
+
+```{r plot}
+# plot the output
+plot_anatomy(sim, col = "type")
+```
+
+```{r save_xml, message=F, warning=F}
+# Save the output to the MECHA folder
+write_anatomy_xml(sim=sim, 
+        path="granar_examples/cellsetdata/current_root.xml")
+
+# It is possible to load cross-section xml under cellset format
+Cross_section <- list()
+Cross_section$nodes <- get_root_section(path="granar_examples/cellsetdata/Maize_pip_cross1.xml")
+plot_anatomy(Cross_section, col = "type")
+```
+
+# MECHA
+
+MECHA is an explicit cross-section model of the root hydraulic anatomy which connects hydraulic concepts across scales.
+
+The model computes horizontal water flow at the level of individual cells, quantifies the contribution of water composite pathways, and predicts root radial permeability (kr), using detailed anatomical descriptions and experimental data on the permeability of cell walls (kw), membranes (Lp) and the conductance of individual plasmodesmata (KPD).
+
+## Install MECHA
+
+# How to calculate hydraulic properties on newly aquire root cross section
+
+```{r MECHA, root.dir=""}
+# Working with Python in R
+library(reticulate)
+# The users are invite to select the pathway to Python
+use_python("../../AppData/Local/Enthought/Canopy/edm/envs/User")
+os <- import("os")
+# If os produce error: verify your python directory
+# use Canopy package manager to install
+# numpy, scipy, networkx, lxml, matplotlib and pyqt
+# For windows user, pyqt allows matplotlib to run without error 
+
+numpy <- import("numpy")
+scipy <- import("scipy")
+networkx <- import("networkx")
+lxml <- import("lxml")
+matplotlib <- import("matplotlib")
+
+source("granar_examples/MECHA_R.R")
+Kr <- MECHA_R(path = "granar_examples/MECHAv4_light.py")
+
+```
+
+
+
+
