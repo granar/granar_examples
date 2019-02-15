@@ -1,0 +1,122 @@
+[ 233.72293012  228.91618066  216.90526374  226.71722064  235.80808101
+  241.93927151  242.29456939  244.21216682  234.525299    229.0770407
+  212.84059435  201.46532541  201.66651685  224.267744    232.71970085
+  225.4747678   234.09899623  228.39436814  230.63290571  221.35519811
+  233.65236312  223.52975502  221.38545977  240.24851261  246.91152718
+  244.5066521   225.61302309  213.84421378  221.81996733  230.95500456
+  232.78340381  214.46674131  232.53469203  221.12083168  218.81338325
+  221.02455773  215.32868433  220.45535974  224.422115    229.50993
+  238.61770805  226.20720506  225.43824541  230.93933631  233.09091885
+  232.07261877  218.97188172  229.58042152  240.62071131           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan] 
+[ 232.30234479  227.3954471   228.48463862  217.67002625  223.33496308
+  227.61011328  238.33452359  237.21156633  241.29426849  215.7102774
+  218.5444514   224.58995506  210.47908871  228.4069511   220.23496099
+  209.79577552  235.28000756  233.60382703  241.43803415  235.88377244
+  236.29309753  237.66911651  229.94607724  220.21080455  231.50609642
+  223.18530698  237.22557586  224.16569666  213.97793171  245.33843234
+  251.41410684  239.40144267  234.75885825  221.9660345   239.54719952
+  236.37127928  222.415141    232.79418977  240.19602451  235.56518818
+  238.39648046  219.34162249  231.41086391  233.01519165  221.56449691
+  227.79922323  228.03511015  227.14903972  228.6338111   210.812136
+  223.39352207  221.40113894  230.6615226   218.83927709  212.33135207
+  218.91189879           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan] 
+[ nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan] 
+[ nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan] 
+[ nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan] 
+[ nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan] 
+[ nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan] 
+[ nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan
+  nan  nan  nan  nan  nan  nan  nan  nan  nan  nan] 
+[ 216.65205988  223.99418775  226.01796599  230.07751135  240.98482614
+  221.29501886  210.18128952  219.82870621  236.09672998  241.41934935
+  228.31237321  235.54594976  230.94180683  240.78645953  243.54638826
+  221.66675807  247.44598004  225.44922506  231.85266055  237.18802388
+  224.15209027  232.32129271  209.69100221  242.36003818  223.34388109
+  219.20341785  243.32779438  248.14825533  237.36343116  250.10948297
+  235.92611227  226.9587125   237.51444818  230.24945596  234.31835012
+  258.84681097  230.37280982  220.3855598   233.10007991  230.11041927
+  242.5294406   231.48781064  249.27389815  242.01215044  232.02499136
+  240.28357192  238.60764797  208.51502187  220.85172314  233.71584464
+  233.03456038  206.58972335  219.87974696  232.77645115  217.76735673
+  218.10558665  225.52581406  205.12417024  224.13337866  242.07085649
+  227.11437801  223.44263546           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan] 
+[ 253.53204981  244.34989721  226.42470427  220.34445377  261.41505071
+  268.48590592  238.57782332  229.70516367  245.10338874  252.71642301
+  222.63132301  253.44932901  272.39342161  244.68444236  270.82185135
+  249.54252336  221.618998    254.49136901  277.88053819  266.55294895
+  243.21636237  234.50349725  234.15993734  262.21849953  224.28395772
+  246.02779426  248.68110807  227.29987736  244.72792375  247.82150935
+  239.56047927  245.70837937  236.9657983   255.86782928  263.60404247
+  241.02484603  233.6011547   223.75721408  239.95734094  258.78217705
+  236.90012938  249.66339847  247.46784768  246.12463129  257.63518778
+  250.13911518  232.56838956  233.20292293  251.12381391  225.214925
+  240.41001015  250.15828152  236.94348665  264.08996538  264.66245421
+  281.07556116  264.2976      242.74083443  245.75130479  259.98823967
+  234.39944893  247.7660503   242.58906067  240.23001866  251.63212792
+  260.36673963  265.44704705  274.69787776           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan
+           nan           nan           nan           nan           nan] 

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hydraulic options -->
+
+<param>
+        <!-- Path to the folders of different hydraulic scenarios -->
+        <path_hydraulics> <!-- By order of selected property: Xcontact / leakiness / kw / Kpd / kAQP -->
+            <Output path='baseline/'/> 
+            <!--Output path='2.4E-04_4.3E-4/'/> 
+            <Output path='1.2E-05_4.3E-4/'/> 
+            <Output path='6.0E-06_4.3E-4/'/> 
+            <Output path='2.4E-04_6.8E-5/'/> 
+            <Output path='1.2E-05_6.8E-5/'/> 
+            <Output path='6.0E-06_6.8E-5/'/--> 
+        </path_hydraulics>
+        <!-- Cell wall hydraulic conductivity
+             Review in Transport in plants II: Part B Tissues and Organs, A. Lauchli: 1. Apoplasmic transport in tissues
+             Units: cm^2/hPa/d
+             6.6E-03: Soybean hypocotyl Steudle and Boyer (1985)
+			 2.4E-04: Zhu and Steudle (1991)
+             1.2E-05: Nitella cell Tyree (1968)
+             6.0E-06: Nitella cell walls Zimmermann and Steudle (1975)
+             1.3E-7:  Cellulose wall Briggs (1967) for thickness of 1.5 micron
+             1.8E-9:  Maize root cell wall Tyree (1973) for thickness of 1.5 micron -->
+        <kwrange>
+            <kw value="2.4E-04" /> <!-- hydraulic conductivity of standard walls -->
+            <!--kw value="1.2E-05" /--> <!-- hydraulic conductivity of standard walls -->
+            <!--kw value="6.0E-06" /--> <!-- hydraulic conductivity of standard walls -->
+        </kwrange>
+		<!-- Apoplastic barrier conductivity
+             Units: cm^2/hPa/d
+             4.3E-07: 1 nanometer pores, Poiseuille law
+             1.00E-16: Virtually impermeable -->
+        <kw_barrier_range> <!-- hydraulic conductivity of suberised and lignified walls -->
+		    <kw_barrier value="1.00E-16" />
+        </kw_barrier_range>
+        
+        <!-- Cell membrane permeability, with separate contribution of the biphospholipid layer (km) and AQP (kAQP)
+             Units: cm/hPa/d
+             6.8E-5 to 1.9E-4: Lp Steudle and Jeschke (1983)
+             4.3E-4: kAQP Elhert et al. (2009), difference in maize cell hydraulic conductivity between control and acid-treated cells (AQP closed)
+             3.0E-5: km after removal of kAQP and kpl from Elhert et al. (2009) and Bret-Hart and Silk (1994)-->
+        <km value="3.0E-5" />
+        <kAQPrange>
+            <kAQP value="4.3E-4" epi_factor="1.0" exo_factor="1.0" cortex_factor="1.0" endo_factor="1.0" stele_factor="1.0" />
+            <!--kAQP value="6.8E-5" epi_factor="1.0" exo_factor="1.0" cortex_factor="1.0" endo_factor="1.0" stele_factor="1.0" /-->
+
+        </kAQPrange>
+        <ratio_cortex value="1.0"/> <!-- (-) ratio of cell membranes hydraulic conductivity between inner and outer cortex -->
+        
+        <!-- Individual plasmodesma conductance and plasmodesmatal frequency
+             Kpl Units: cm^3/hPa/d/plasmodesmata
+			 9.1E-13: Very low Kpl (extrapolation)
+             5.3E-12: Geometrical average from Bret-Hart and Silk (1994)
+             3.1E-11: Estimation from Ginsburg & Ginzburg (1970)
+             
+             Frequency*height is the conserved quantity when height changes (default height in measured tissue assumed to be 200 microns)
+             Measurements reported below come from elongated maize cell (~200 microns)
+             Fpl by height Units: plasodesmata*cm/cm^2
+             8.0E5: Default average (0.4/micron^2 * 200 microns)
+             1.08E6: height * Plasmodesmal frequency between epidermis and exodermis from Clarkson et al. (1987)
+             2.28E6: height * Plasmodesmal frequency between exodermis and cortex from Clarkson et al. (1987)
+             8.6E5: height * Plasmodesmal frequency between cortex and cortex from Warmbrodt (1985b)
+             8.8E5: height * Plasmodesmal frequency between cortex and endodermis from Warmbrodt (1985b)
+             6.4E5: height * Plasmodesmal frequency between endodermis and endodermis from Warmbrodt (1985b)
+             9.6E5: height * Plasmodesmal frequency between endodermis and pericycle from Warmbrodt (1985b)
+             7.0E5: height * Plasmodesmal frequency between pericycle and pericycle from Warmbrodt (1985b)
+             1.08E6: height * Plasmodesmal frequency between pericycle and stele from Warmbrodt (1985b)
+             6.4E5: height * Plasmodesmal frequency between stele and stele (parenchyma) from Warmbrodt (1985b) -->
+        <Kplrange>
+		    <Kpl value="5.3E-12" cortex_factor="1.0" PCC_factor="1.0" PPP_factor="1.0"/> <!-- <Kpl value="6.62E-13"/> <Kpl value="2.65E-12"/> <Kpl value="5.3E-12"/> <Kpl value="1.06E-11"/> -->
+        </Kplrange>
+        <Fplxheight value="8.0E5"/> <!-- Default height * plasmodesmatal frequency -->
+        <Fplxheight_epi_exo value="1.08E6"/> 
+        <Fplxheight_outer_cortex value="2.28E6"/>
+        <Fplxheight_cortex_cortex value="8.6E5"/>
+        <Fplxheight_cortex_endo value="8.8E5"/>
+        <Fplxheight_endo_endo value="6.4E5"/>
+        <Fplxheight_endo_peri value="9.6E5"/>
+        <Fplxheight_peri_peri value="7.0E5"/>
+        <Fplxheight_peri_stele value="1.08E6"/>
+        <Fplxheight_stele_stele value="6.4E5"/>
+		<Fplxheight_stele_comp value="9.8E5"/>
+		<Fplxheight_peri_comp value="7.0E5"/>
+		<Fplxheight_comp_comp value="6.8E5"/>
+		<Fplxheight_comp_sieve value="1.76E6"/>
+		<Fplxheight_peri_sieve value="7.2E5"/>
+		<Fplxheight_stele_sieve value="9.0E5"/>
+        
+		<!-- Sieve tube hydraulic conductance (cm^3/hPa/d) -->
+		<K_sieve value="1.0E-6"/> 
+		<!-- Xylem vessel hydraulic conductance (cm^3/hPa/d) -->
+		<K_xyl value="1.0E-6"/> 
+		
+        <!-- Xcontact (microns) is the X threshold coordinate of contact between soil and root (lower X not in contact with soil)  -->
+		<!-- Note that contact is also dealt with in the *Geometry.xml input file where the id's of cells in contact with the soil are listed  -->
+        <Xcontactrange>
+            <Xcontact value="0"/> <!-- Maize1: 300 microns -->
+        </Xcontactrange>
+</param>

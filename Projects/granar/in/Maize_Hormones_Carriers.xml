@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<param> 
+	<!-- Hormone convection-diffusion-degradation (activated by setting the value of Sym_contagion and/or Apo_contagion to 2 in *_General.xml)
+	     Hormone movement is calculated at steady-state within the symplast or apoplast.
+		 Degradation
+		 Units: mol degraded / mol-day
+		 The diffusivity & degradation constant allows avoiding the infinite accumulation of solutes in locations that do not export the hormone.
+		 24: average lifetime of an hour (Normanly 1997, Auxin metabolism)
+		 Diffusion
+		 Units: cm^2 / day
+		 0.035: value for mannitol in cell walls (Knipfer et al., 2007)
+		 1.2: value for K (Foster & Miklavcic, 2017)
+		 2.0: Value for D2O in water (Spyrou et al., 2016)
+		 The source cells are defined in *_Geometry*.xml, and the concentration in source cells is set to the constant 1 (relative concentration) -->
+	<Hormone_movement>
+	   <Degradation_constant_H1 value="48.0"/>
+	   <Diffusivity_PD_H1 value="0.0035"/> <!-- -->
+	   <Diffusivity_PW_H1 value="0.0035"/>
+	   <H1_D2O flag="0"/>
+    </Hormone_movement>
+	
+	<!-- Hormone active transport (activated by setting the value of Sym_contagion and Apo_contagion to 2 in *_General.xml)
+	     Active transport is calculated assuming that hormone concentration is low enough to be proportional to concentration (linear part of the Michaelis-Menten curve)
+		 Efflux carriers send the hormone from the symplast to the apoplast, while influx cariiers do the opposite
+		 Active transport constants (=Vmax/KM)
+		 Units: liter / day-micron²
+		 3.9E-16: ABA efflux carrier ABCG25 (Kuromori et al. 2010), assuming 55 kDa carrier, and 100 carriers per micron²
+		 5.8E-14: ABA influx carrier NFP4, previously AIT1 (Kanno et al., 2012), assuming same carrier density as in transformed yeast, and yeast spherical cell diameter of 6 microns
+		 Direction: +1 is influx, -1 is efflux
+		 Tissue: 1 		= exodermis
+				 2 		= epidermis
+				 3 		= endodermis
+				 4 		= cortex
+				 5 		= stele (excluding the pericycle)
+				 11, 23 = phloem
+				 12, 26 = companion cell
+				 13, 19 = protoxylem
+				 13, 20 = metaxylem
+				 16, 21 = pericycle (21 being the xylem pole pericycle)
+		 The source cells are defined below, and the concentration in source cells is set to the constant 1 (relative concentration) -->
+	<Hormone_active_transport>
+		<carrier_range>
+			<carrier tissue="-1"  constant="7.9E-11" direction="-1"/> <!-- xylem parenchyma: ... -->
+		</carrier_range>
+    </Hormone_active_transport>
+	
+	<!-- Symplastic contagion inputs -->
+	<Sym_Contagion>
+		<source_range>
+			<source id="-1" concentration="1.0"/> <!-- xylem parenchyma: ... -->
+		</source_range>
+		<target_range>
+			<target id="-1"/> <!-- Low water potential side cortex Hydrotropism: ... -->
+			<target id="-1"/> <!-- Dry-side cortex Hydropatterning:  (note that the cross-section is flipped as compared to Cell_Map4.png -->
+		</target_range>
+		<immune_range>
+			<immune id="-1"/> 
+		</immune_range>
+	</Sym_Contagion>
+	
+	<!-- Apoplastic contagion inputs -->
+	<Apo_Contagion>
+		<source_range>
+			<source id="-1" concentration="1.0"/> <!-- xylem parenchyma: 24, 29, 43, 51, 67 -->
+		</source_range>
+		<target_range>
+			<target id="-1"/> <!-- Low water potential side cortex Hydrotropism: 78, 79 -->
+			<target id="-1"/> <!-- Dry-side cortex Hydropatterning:  (note that the cross-section is flipped as compared to Cell_Map3.png -->
+		</target_range>
+		<immune_range>
+			<immune id="-1"/> 
+		</immune_range>
+	</Apo_Contagion>
+	
+	<!-- Contact (cell id) is the list of cells in contact with the water meniscus at the interface with the soil  -->
+	<Contactrange>
+		<Contact id="-1"/>
+    </Contactrange>
+	<!-- <Contactrange>
+        <Contact id="-1"/>
+    </Contactrange>  -->
+</param>
+
+
