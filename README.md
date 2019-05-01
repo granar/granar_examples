@@ -26,21 +26,16 @@ library(cowplot)
 library(retistruct)
 library(Hmisc)
 ```
-```{r, eval=T, echo= F, warning=FALSE, message=F}
-library(granar)
-```
 
 ```{r}
 # Read the parameters
-params <- read_param_xml("Zea_mays_Heymans_2019.xml")
+params <- read_param_xml("Zea_mays_1_Heymans_2019.xml")
 ```
 
 ```{r GRANAR, message = F, warning= F}
 # Run the model
-while (TRUE) {
-  sim <- try(create_anatomy(parameters = params, verbatim=F), silent = TRUE)
-  if(!is(sim,'try-error')) break
-}
+
+sim <- create_anatomy(parameters = params)
 ```
 
 ```{r plot}
