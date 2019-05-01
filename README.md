@@ -1,9 +1,11 @@
-# How to use GRANAR
+# What is GRANAR?
 
-GRANAR was built to reconstruct root cross-section. It can generate root from a simple set of parameters.
+GRANAR stand for Generator of Root ANAtomy in R. The GRANAR model is able to generate complete cell networks of a root cross-sections using a small set of root anatomical features. The root anatomical features can typically be gathered by using software image analysis such as [ImageJ](https://imagej.net/Welcome) [@Schneider]. Once the root anatomy is created, the cell network can be saved as an eXtended Markup Language (XML) file. The structure of the XML files created by GRANAR are identical to the ones created of [CellSeT](https://www.nottingham.ac.uk/research/groups/cvl/software/cellset.aspx) [@Pound] (a software which digitize root anatomical network).
 
-To run this example, the granar package is required. This package can be found on [GitHub](https://github.com/granar/granar).
-Alternatively, by simply executing the following line in the R environment:
+# How to use GRANAR?
+
+GRANAR is an R package. The *'granar'* package can be found on [GitHub](https://github.com/granar/granar).
+Alternatively, by simply executing the following line in the [R](https://cran.r-project.org/) environment:
 
 ```{r}
 install.packages("devtools")
