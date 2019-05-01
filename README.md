@@ -42,3 +42,5 @@ sim <- create_anatomy(parameters = params)
 # plot the output
 plot_anatomy(sim, col = "type")
 ```
+
+![](modelparam/Zea_mays.PNG)
