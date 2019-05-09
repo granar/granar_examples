@@ -1,5 +1,5 @@
 ---
-title: "GRANAR user guide"
+title: "GRANAR User Guide"
 author: "Adrien Heymans"
 date: "April 2019"
 output:
@@ -10,18 +10,18 @@ bibliography: bibliography.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "~/GitHub/")
+knitr::opts_knit$set(root.dir = "~/Dropbox/science/projects/granar/")
 ```
 
 ***
 # What is GRANAR?
 
-GRANAR stand for Generator of Root ANAtomy in R. The GRANAR model is able to generate complete cell networks of a root cross-sections using a small set of root anatomical features. The root anatomical features can typically be gathered by using software image analysis such as [ImageJ](https://imagej.net/Welcome) [@Schneider]. Once the root anatomy is created, the cell network can be saved as an eXtended Markup Language (XML) file. The structure of the XML files created by GRANAR are identical to the ones created of [CellSeT](https://www.nottingham.ac.uk/research/groups/cvl/software/cellset.aspx) [@Pound] (a software which digitize root anatomical network).
+GRANAR stands for Generator of Root ANAtomy in R. The GRANAR model is able to generate complete cell networks of root cross-sections using a small set of root anatomical parameters These root anatomical features can typically be gathered  using software image analysis such as [ImageJ](https://imagej.net/Welcome) [@Schneider]. Once the root anatomy is created, the cell network can be saved as an eXtended Markup Language (XML) file. The structure of the XML files created by GRANAR are identical to the ones created by [CellSeT](https://www.nottingham.ac.uk/research/groups/cvl/software/cellset.aspx) [@Pound] (a software which digitize root anatomical network).
 
 # How to use GRANAR?
 
-GRANAR is an R package. The *'granar'* package can be found on [GitHub](https://github.com/granar/granar).
-Alternatively, by simply executing the following line in the [R](https://cran.r-project.org/) environment:
+GRANAR is available as an R package. The *'granar'* package can be found on [GitHub](https://github.com/granar/granar).
+Alternatively, GRANAR can be installed localy by simply executing the following line in the [R](https://cran.r-project.org/) environment:
 
 ```{r install, echo=TRUE, eval=FALSE}
 install.packages("devtools")
@@ -30,30 +30,37 @@ install_github("granar/granar")
 library(granar)
 ```
 
-Granar was built upon some dependencies:
+Granar was built upon the following dependencies dependencies:
 
 ```{r preambule, echo=T, warning=F, message=F}
 # Load the libraries
 library(xml2)
 library(tidyverse)
 library(plyr)
-library(deldir) # need to be install first
-library(alphahull) # need to be install first
+library(deldir) 
+library(alphahull) 
 library(viridis)
 library(sp)
 library(cowplot)
-library(retistruct) # need to be install first
+library(retistruct) 
 library(Hmisc)
+
+# Working with Python in R
+library(reticulate)
+
 ```
 
 You do not need your own data to try it out, some examples of input parameters of GRANAR can be found in a [Repository](https://github.com/granar/granar_examples/). The following table shows an example of all input variables inside one of the .XML file used to run GRANAR:
+
 ```{r param, eval=T, echo= F, warning=FALSE, message=F}
 library(granar)
 params <- read_param_xml("granar_examples/modelparam/Zea_mays_Heymans_2019.xml")
 print(params)
 ```
 
-To import the .XML parameter file into R, it can be done with the function *read_param_xml()*. Example: 
+Importing the .XML parameter file into R can be done with the function *read_param_xml()*. Example: 
+
+
 ```{r param_zea, eval=FALSE, echo= TRUE}
 # Read the parameters
 params <- read_param_xml("granar_examples/modelparam/Zea_mays_Heymans_2019.xml")
@@ -61,31 +68,39 @@ params <- read_param_xml("granar_examples/modelparam/Zea_mays_Heymans_2019.xml")
 ```
 
 It is possible to change directly some of the parameters one-by-one in R.
+
 ```{r param_aer}
 # Copy and modify the parameters
 params_no_aerenchyma <- params
 params_no_aerenchyma$value[params$name == "aerenchyma" & params$type == "proportion"] <- 0
 ```
 
-Once, the input file is loaded the function *create_anatomy()* can be called and it will generate the corresponding cross-section.
+Once, the input file is loaded, the function *create_anatomy()* can be called to generate the corresponding cross-section.
+
 ```{r GRANAR, message = F, warning= F}
+
 # Run the model with the loaded parameters
 sim <- create_anatomy(parameters = params, verbatim=F)
 
 # Run the model with the modified parameters
 sim_no_aer <- create_anatomy(parameters = params_no_aerenchyma, verbatim=F)
+
 ```
 
-To visualize the results a dedicated function, named *plot_anatomy()*, can be usefull. Different information can be illustrate such as the cell type (fig. \ref{granar_1}) or the cell size of the cross section (fig. \ref{granar_2})
+The funtion `plot_anatomy()` can be used to vizualize the generated anatomy. Different informations can be displayed such as the cell type (fig. \ref{granar_1}) or the cell size of the cross section (fig. \ref{granar_2})
+
 ```{r type, fig.cap= "Maize cross-section anatomy made by GRANAR. \\label{granar_1}", results = 'asis', warning= F, echo=T, fig.pos="h",fig.scap=NA, out.width='.40\\linewidth', fig.width=5, fig.height=5,fig.show='hold',fig.align='center'}
 # Create figure of the generated anatomies.
 plot_anatomy(sim, col = "type")
 ```
+
+
 ```{r area, fig.cap= "Maize cross-section anatomy made by GRANAR. \\label{granar_2}", results = 'asis', warning= F, echo=T, fig.pos="h",fig.scap=NA, out.width='.40\\linewidth', fig.width=4, fig.height=4,fig.show='hold',fig.align='center'}
 plot_anatomy(sim_no_aer, col = "area")
 ```
 
-When the anatomy is completed, a saving procedure can be executed:
+When the anatomy is completed it can be saved using the `write_anatomy_xml()` function.
+
 ```{r save_xml, message=FALSE, warning=FALSE, eval= FALSE}
 # Save the output to the MECHA folder
 write_anatomy_xml(sim=sim, 
@@ -93,10 +108,12 @@ write_anatomy_xml(sim=sim,
 
 ```
 
-To load the nodes data of a cross-section, it can be achieved with *get_root_section()*. Below, we load a fully digitilized cross section done by CellSeT cross-section of a maize (Zea mays. B73 line) crown root grown aeroponically (fig. \ref{CellSeT}). It was collected 5 cm above the root tip. And the initial image cross section come from Hachez et al. [-@Hachez]. The digitilization with CellSeT was performed to run MECHA [@Couvreur] on it.
+Loading the nodes data of a cross-section can be achieved with `get_root_section()`. Below, we load a fully digitilized cross section done by CellSeT cross-section of a maize (*Zea mays. B73 line*) crown root grown aeroponically (fig. \ref{CellSeT}). It was collected 5 cm above the root tip. And the initial image cross section come from Hachez et al. [-@Hachez]. 
 
 Next, to compare visually the root anatomical network obtain with CellSeT with the one of GRANAR, we generated the coresponding root cross section with GRANAR thanks to the cell data inside the CellSeT file.
+
 ```{r, dir = "~/GitHub/", fig.cap= "Cross-section anatomy made by CellSeT. Maize (Zea mays. B73 line) crown root grown aeroponically. It was collected 5 cm above the root tip. And the initial image cross section come from Hachez et al. (2006). The digitilization with CellSeT was performed to run MECHA [@Couvreur] on it. \\label{CellSeT}", warning=FALSE, message=FALSE, fig.width=5, fig.height=5}
+
 # It is possible to load cross-section xml under cellset format
 Cross_section <- list()
 Cross_section$nodes <- get_root_section(
@@ -134,10 +151,13 @@ condens <- node%>%
   dplyr::ungroup()
 
 ```
+
+
 ```{r fig.cap= "Maize cross-section anatomy made by GRANAR. \\label{GRANAR}",fig.width=5, fig.height=5, warning=FALSE }
 
 # Replace input parameter of GRANAR with the cell data gathered from CellSeT. 
-# Cell data are turned from µm to mm.
+# Cell data are turned from ?m to mm.
+
 params$value[params$name == "aerenchyma" &
              params$type == "proportion"] <- 0
 params$value[params$name == "randomness" & 
@@ -180,37 +200,40 @@ sim <- create_anatomy(parameters = params)
 plot_anatomy(sim)
 
 ```
+
+
 ```{r, eval= TRUE, message=FALSE, warning=FALSE}
 # Save output data into a .XML file.
 write_anatomy_xml(sim=sim, 
         path="granar_examples/cellsetdata/current_root.xml")
 ```
 
-# Couling GRANAR with MECHA
+
+# Coupling GRANAR with MECHA
 
 ## MECHA
 
-[MECHA](https://mecharoot.github.io/) is an explicit cross-section model of the root hydraulic anatomy which connects hydraulic concepts across scales.
+[MECHA](https://mecharoot.github.io/) is an explicit cross-section model of the root hydraulic anatomy which connects hydraulic concepts across scales [@Couvreur].
 
 The model computes horizontal water flow at the level of individual cells, quantifies the contribution of water composite pathways, and predicts root radial permeability (kr), using detailed anatomical descriptions and experimental data on the permeability of cell walls (kw), membranes (Lp) and the conductance of individual plasmodesmata (KPD).
 
 ### Install MECHA
 
-Here, we installed [Canopy](https://www.enthought.com/product/canopy/) to run MECHA which was coded in python. Canopy offer the possibilty to install easilly the dependencies of MECHA:
+Here, we installed [Canopy](https://www.enthought.com/product/canopy/) to run MECHA which was coded in Python. Canopy offer the possibilty to install easily the dependencies of MECHA:
 
 - numpy
 - scipy
 - networkx (v.1.9.1)
 - lxml
 
-### How to calculate hydraulic properties on newly aquire root cross section
+### How to calculate hydraulic properties on newly aquired root cross section
 
 ```{r MECHA, message= FALSE}
-# Working with Python in R
-library(reticulate)
-# The users are invite to select the pathway to Python
+
+# The users are invited to select the pathway to Python
 use_python("../../AppData/Local/Enthought/Canopy/edm/envs/User")
 os <- import("os")
+
 # If os produce error: verify your python directory
 # use Canopy package manager to install
 # numpy, scipy, networkx, lxml, matplotlib and pyqt
