@@ -10,7 +10,7 @@ bibliography: bibliography.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "~/Dropbox/science/projects/granar/")
+knitr::opts_knit$set(root.dir = "~/GitHub/")
 ```
 
 ***
@@ -215,7 +215,7 @@ write_anatomy_xml(sim=sim,
 
 [MECHA](https://mecharoot.github.io/) is an explicit cross-section model of the root hydraulic anatomy which connects hydraulic concepts across scales [@Couvreur].
 
-The model computes horizontal water flow at the level of individual cells, quantifies the contribution of water composite pathways, and predicts root radial permeability (kr), using detailed anatomical descriptions and experimental data on the permeability of cell walls (kw), membranes (Lp) and the conductance of individual plasmodesmata (KPD).
+The model computes horizontal water flow at the level of individual cells, quantifies the contribution of water composite pathways, and predicts root radial permeability ($k_r$), using detailed anatomical descriptions and experimental data on the permeability of cell walls ($k_w$), membranes ($L_p$) and the conductance of individual plasmodesmata ($K_{PD}$).
 
 ### Install MECHA
 
@@ -230,7 +230,7 @@ Here, we installed [Canopy](https://www.enthought.com/product/canopy/) to run ME
 
 ```{r MECHA, message= FALSE}
 
-# The users are invited to select the pathway to Python
+# The user is invited to select the pathway to Python
 use_python("../../AppData/Local/Enthought/Canopy/edm/envs/User")
 os <- import("os")
 

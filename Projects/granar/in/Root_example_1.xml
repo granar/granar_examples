@@ -6,7 +6,7 @@
         
         <!-- Image path and properties -->
         <path value='current_root.xml' />
-        <im_scale value="1000" /> <!-- #image scale (micron per pixel  or  micron per default unit of the GRANAR file) -->
+        <im_scale value="1" /> <!-- #image scale (micron per pixel  or  micron per default unit of the GRANAR file) -->
        
         <!-- Maturity level
         0: No apoplastic barriers

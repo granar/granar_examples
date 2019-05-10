@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 #Directory
-dir='C:/Users/heymansad/Documents/GitHub/granar_examples/'
+dir='granar_examples/'
 
 #Project
 Project='Projects/granar/'#BBSRC/'#'Projects/
 
 #Inputs
 Gen='Maize_General.xml'#'Arabido1_General.xml' #'MilletLR3_General.xml' #
-Geom='Root_example.xml'#'Arabido4_Geometry_BBSRC.xml' #'Maize2_Geometry.xml' #''MilletLR3_Geometry.xml' #'Wheat1_Nodal_Geometry_aerenchyma.xml' #'Maize1_Geometry.xml' #
+Geom='Root_example_1.xml'#'Arabido4_Geometry_BBSRC.xml' #'Maize2_Geometry.xml' #''MilletLR3_Geometry.xml' #'Wheat1_Nodal_Geometry_aerenchyma.xml' #'Maize1_Geometry.xml' #
 Hydr='Maize_Hydraulics.xml' #'Arabido1_Hydraulics_ERC.xml' #'MilletLR3_Hydraulics.xml' #'Test_Hydraulics.xml' #
 BC='Maize_BC_kr.xml' #'Arabido4_BC_BBSRC2.xml' #'Arabido1_BC_Emily.xml' #'Arabido3_BC_BBSRC.xml' #'Maize_BC_SoluteAna_krOsmo.xml'#'Maize_BC_OSxyl_hetero.xml' #'Arabido1_BC_Emily.xml' #'BC_Test.xml' #'Maize_BC_Plant_phys.xml'
 Horm='Maize_Hormones_Carriers.xml'
