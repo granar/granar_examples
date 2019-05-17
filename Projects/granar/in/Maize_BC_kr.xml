@@ -17,6 +17,7 @@
 	   <osmotic_convection flag="0"/>
 	   <osmotic_diffusivity value="0"/>
 	   <Psi_soil pressure_left="0.0"   pressure_right="0.0"     osmotic_left="0.0"    osmotic_right="0.0"    osmotic_symmetry="1"  osmotic_shape="1"/>
+	   <Psi_soil pressure_left="0.0"   pressure_right="0.0"     osmotic_left="0.0"    osmotic_right="0.0"    osmotic_symmetry="1"  osmotic_shape="1"/>
 	</Psi_soil_range>
 	
 	<!-- Xylem boundary conditions
@@ -30,6 +31,7 @@
 	   <osmotic_convection flag="0"/>
 	   <osmotic_diffusivity value="0"/>
 	   <BC_xyl pressure="-5.0E3"	deltaP="nan"		flowrate="nan"		osmotic_endo="0.0"   	osmotic_xyl="0.0"     osmotic_symmetry="1"  osmotic_shape="1"  />
+	   <BC_xyl pressure="-5.0E3"	deltaP="nan"		flowrate="nan"		osmotic_endo="0.0"   	osmotic_xyl="0.0"     osmotic_symmetry="1"  osmotic_shape="1"  />
 	</BC_xyl_range>
 	
 	<!-- Phloem sieve tubes water potentials
@@ -41,6 +43,7 @@
 		 If flowrate==0.0 and Barrier>0 (differentiation zone): no flux in phloem
 		 If flowrate==0.0 and Barrier==0 (elongation zone): phloem source equals elongation sink -->
 	<BC_sieve_range>
+	   <BC_sieve pressure="nan"  deltaP="nan"	flowrate="nan"  osmotic="0.0"    />
 	   <BC_sieve pressure="nan"  deltaP="nan"	flowrate="nan"  osmotic="0.0"    />
 	</BC_sieve_range>
 	
@@ -63,6 +66,7 @@
              0->1: multiplies all reflection coefficients -->
 	<Psi_cell_range>
 	   <Psi_cell Os_cortex="0" Os_hetero="0" s_hetero="0" s_factor="1.0"/>
+	   <Psi_cell Os_cortex="0" Os_hetero="0" s_hetero="0" s_factor="1.0"/>
 	</Psi_cell_range>
 	
 	<!-- Cell elongation rate
@@ -75,6 +79,7 @@
 		 0.000007 radian/micron/d: .......... -->
 	<Elong_cell_range>
 	   <Elong_cell midpoint_rate="0" 	 side_rate_difference="0"  /> <!-- kappa_dot="0.000007" -->
+	   <Elong_cell midpoint_rate="0" 	 side_rate_difference="0"  />
 	</Elong_cell_range>
 	<!-- Relative volume of water in symplast and in apoplast
 	     Units: dimensionless
