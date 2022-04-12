@@ -1240,23 +1240,23 @@ for h in range(Nhydraulics):
                 print('Error: Cannot have both pressure and pressure change relative to equilibrium as phloem boundary condition')
         
         #Soil - root contact limit
-        if NXcontact is Nhydraulics:
+        if NXcontact == Nhydraulics:
             Xcontact=float(Xcontactrange[h].get("value")) #(micrometers) X threshold coordinate of contact between soil and root (lower X not in contact with soil)
-        elif NXcontact is 1:
+        elif NXcontact == 1:
             Xcontact=float(Xcontactrange[0].get("value"))
         else:
             Xcontact=float(Xcontactrange[int(h/(NkAQP*NKpl*Nkw*Nkw_barrier))].get("value")) #OK
         
         #Cell wall hydraulic conductivity
-        if Nkw is Nhydraulics:
+        if Nkw == Nhydraulics:
             kw = float(kwrange[h].get("value"))
-        elif Nkw is 1:
+        elif Nkw == 1:
             kw = float(kwrange[0].get("value"))
         else:
             kw = float(kwrange[int(h/(NkAQP*NKpl))%Nkw].get("value"))
-        if Nkw_barrier is Nhydraulics:
+        if Nkw_barrier == Nhydraulics:
             kw_barrier = float(kw_barrier_range[h].get("value"))
-        elif Nkw_barrier is 1:
+        elif Nkw_barrier == 1:
             kw_barrier = float(kw_barrier_range[0].get("value"))
         else:
             kw_barrier = float(kw_barrier_range[int(h/(NkAQP*NKpl*Nkw))%Nkw_barrier].get("value"))
@@ -1299,18 +1299,18 @@ for h in range(Nhydraulics):
             kw_passage=kw_barrier #(cm^2/hPa/d) hydraulic conductivity of passage cells tangential walls
         
         #Plasmodesmatal hydraulic conductance
-        if NKpl is Nhydraulics:
+        if NKpl == Nhydraulics:
             iPD=h
-        elif NKpl is 1:
+        elif NKpl == 1:
             iPD=0
         else:
             iPD=int(h/NkAQP)%NKpl
         Kpl = float(Kplrange[iPD].get("value"))
         
         #Contribution of aquaporins to membrane hydraulic conductivity
-        if NkAQP is Nhydraulics:
+        if NkAQP == Nhydraulics:
             iAQP=h
-        elif NkAQP is 1:
+        elif NkAQP == 1:
             iAQP=0
         else:
             iAQP=h%NkAQP
