@@ -2761,7 +2761,7 @@ for h in range(Nhydraulics):
                 row=int(rank2row[rank])
                 Q_elong_layer[row][iMaturity][count] += Q_elong[NwallsJun+cid]
             Q_tot[iMaturity][count]=sum(Q_soil) #(cm^3/d) Total flow rate at root surface
-            for ind in range(NwallsJun,len(G.node)): #NwallsJun is the index of the first cell
+            for ind in range(NwallsJun,len(G.nodes)): #NwallsJun is the index of the first cell
                 cellnumber1=ind-NwallsJun
                 rank = int(Cell_rank[cellnumber1])
                 row = int(rank2row[rank])
@@ -3529,7 +3529,7 @@ for h in range(Nhydraulics):
                 #    myfile.write("ASCII \n")
                 #    myfile.write(" \n")
                 #    myfile.write("DATASET UNSTRUCTURED_GRID \n")
-                #    myfile.write("POINTS "+str(len(G.node))+" float \n")
+                #    myfile.write("POINTS "+str(len(G.nodes))+" float \n")
                 #    for node in G:
                 #        myfile.write(str(float(position[node][0])) + " " + str(float(position[node][1])) + " " + str(0.0) + " \n")
                 #    myfile.write(" \n")
@@ -3545,7 +3545,7 @@ for h in range(Nhydraulics):
                 #        if i>=NwallsJun: #Cell node
                 #            myfile.write("1 \n")
                 #    myfile.write(" \n")
-                #    myfile.write("POINT_DATA " + str(len(G.node)) + " \n")
+                #    myfile.write("POINT_DATA " + str(len(G.nodes)) + " \n")
                 #    myfile.write("SCALARS Cell_pressure float \n")
                 #    myfile.write("LOOKUP_TABLE default \n")
                 #    for node in G:
@@ -3718,11 +3718,11 @@ for h in range(Nhydraulics):
                         myfile.write("ASCII \n")
                         myfile.write(" \n")
                         myfile.write("DATASET UNSTRUCTURED_GRID \n")
-                        myfile.write("POINTS "+str(len(G.node))+" float \n")
+                        myfile.write("POINTS "+str(len(G.nodes))+" float \n")
                         for node in G:
                             myfile.write(str(float(position[node][0])) + " " + str(float(position[node][1])) + " " + str(0.0) + " \n")
                         myfile.write(" \n")
-                        myfile.write("CELLS " + str(Nwalls*2-len(list_ghostwalls)*2) + " " + str(Nwalls*6-len(list_ghostwalls)*6) + " \n") #len(G.node)
+                        myfile.write("CELLS " + str(Nwalls*2-len(list_ghostwalls)*2) + " " + str(Nwalls*6-len(list_ghostwalls)*6) + " \n") #len(G.nodes)
                         for node, edges in G.adjacency():
                             i=indice[node]
                             if i not in list_ghostwalls:
@@ -3742,7 +3742,7 @@ for h in range(Nhydraulics):
                                         #print(nx.get_node_attributes(edges,'path'))
                                         myfile.write(str(3) + " \n") #Line cell type
                         myfile.write(" \n")
-                        myfile.write("POINT_DATA " + str(len(G.node)) + " \n")
+                        myfile.write("POINT_DATA " + str(len(G.nodes)) + " \n")
                         myfile.write("SCALARS Wall_pressure float \n")
                         myfile.write("LOOKUP_TABLE default \n")
                         for node in G:
@@ -3758,7 +3758,7 @@ for h in range(Nhydraulics):
                         myfile.write("ASCII \n")
                         myfile.write(" \n")
                         myfile.write("DATASET UNSTRUCTURED_GRID \n")
-                        myfile.write("POINTS "+str(len(G.node))+" float \n")
+                        myfile.write("POINTS "+str(len(G.nodes))+" float \n")
                         for node in G:
                             myfile.write(str(float(position[node][0])) + " " + str(float(position[node][1])) + " " + str(0.0) + " \n")
                         myfile.write(" \n")                                     
@@ -3786,7 +3786,7 @@ for h in range(Nhydraulics):
                             if i>=NwallsJun: #Cell node
                                 myfile.write("1 \n")
                         myfile.write(" \n")
-                        myfile.write("POINT_DATA " + str(len(G.node)) + " \n")
+                        myfile.write("POINT_DATA " + str(len(G.nodes)) + " \n")
                         myfile.write("SCALARS Wall_and_Cell_osmotic_pot float \n")
                         myfile.write("LOOKUP_TABLE default \n")
                         for node, edges in G.adjacency():
@@ -3810,7 +3810,7 @@ for h in range(Nhydraulics):
                         myfile.write("ASCII \n")
                         myfile.write(" \n")
                         myfile.write("DATASET UNSTRUCTURED_GRID \n")
-                        myfile.write("POINTS "+str(len(G.node))+" float \n")
+                        myfile.write("POINTS "+str(len(G.nodes))+" float \n")
                         for node in G:
                             myfile.write(str(float(position[node][0])) + " " + str(float(position[node][1])) + " " + str(0.0) + " \n")
                         myfile.write(" \n")
@@ -3838,7 +3838,7 @@ for h in range(Nhydraulics):
                             if i>=NwallsJun: #Cell node
                                 myfile.write("1 \n")
                         myfile.write(" \n")
-                        myfile.write("POINT_DATA " + str(len(G.node)) + " \n")
+                        myfile.write("POINT_DATA " + str(len(G.nodes)) + " \n")
                         myfile.write("SCALARS pressure float \n")
                         myfile.write("LOOKUP_TABLE default \n")
                         for node in G:
@@ -3856,7 +3856,7 @@ for h in range(Nhydraulics):
                         myfile.write("ASCII \n")
                         myfile.write(" \n")
                         myfile.write("DATASET UNSTRUCTURED_GRID \n")
-                        myfile.write("POINTS "+str(len(G.node))+" float \n")
+                        myfile.write("POINTS "+str(len(G.nodes))+" float \n")
                         for node in G:
                             myfile.write(str(float(position[node][0])) + " " + str(float(position[node][1])) + " " + str(0.0) + " \n")
                         myfile.write(" \n")
@@ -3872,7 +3872,7 @@ for h in range(Nhydraulics):
                             if i>=NwallsJun: #Cell node
                                 myfile.write("1 \n")
                         myfile.write(" \n")
-                        myfile.write("POINT_DATA " + str(len(G.node)) + " \n")
+                        myfile.write("POINT_DATA " + str(len(G.nodes)) + " \n")
                         myfile.write("SCALARS Cell_pressure float \n")
                         myfile.write("LOOKUP_TABLE default \n")
                         for node in G:
