@@ -407,7 +407,7 @@ y_grav=0.0 # (micrometers)
 n_cell_endo=0 #Counting the total number of cells in the endodermis
 for w in Cell2Wall_loop: #Loop on cells. Cell2Wall_loop contains cell wall groups info (one group by cell)
 	cellnumber1 = int(w.getparent().get("id")) #Cell ID number
-	if G.node[NwallsJun + cellnumber1]['cgroup']==3: #Endodermis
+	if G.nodes[NwallsJun + cellnumber1]['cgroup']==3: #Endodermis
 	        x_grav+=position[NwallsJun + cellnumber1][0]
 	        y_grav+=position[NwallsJun + cellnumber1][1]
 	        n_cell_endo+=1
@@ -439,7 +439,7 @@ xyl_dist=[] #List of distances between xylem and cross-section centre
 #angle_dist_exo_grav=array([-4,0]) #array of distances and angles between exo cells and grav. Initializing the array with values that will eventualy be deleted
 for w in Cell2Wall_loop: #Loop on cells. Cell2Wall_loop contains cell wall groups info (one group by cell)
 	cellnumber1 = int(w.getparent().get("id")) #Cell ID number
-	celltype=G.node[NwallsJun + cellnumber1]['cgroup'] #Cell type
+	celltype=G.nodes[NwallsJun + cellnumber1]['cgroup'] #Cell type
 	if celltype==19 or celltype==20: #Proto- and Meta-xylem in new Cellset version
 	    celltype=13
 	elif celltype==21: #Xylem pole pericycle in new Cellset version
@@ -472,7 +472,7 @@ listprotosieve=[]
 mincid=99999
 for w in Cell2Wall_loop: #Loop on cells. Cell2Wall_loop contains cell wall groups info (one group by cell)
 	cellnumber1 = int(w.getparent().get("id")) #Cell ID number
-	#celltype=G.node[NwallsJun + cellnumber1]['cgroup']
+	#celltype=G.nodes[NwallsJun + cellnumber1]['cgroup']
 	celltype=Cell_rank[cellnumber1] #Cell types 4 and 5 updated to account for their ranking within the cortex / stele
 	if celltype==4: #Cortex
 	    if any(Cell_rank[Cell_connec[cellnumber1][0:nCell_connec[cellnumber1][0]]]==3): #Cell to cell connection with endodermis
@@ -503,7 +503,7 @@ for w in Cell2Wall_loop: #Loop on cells. Cell2Wall_loop contains cell wall group
 	        dist=hypot(x_cell-x_grav,y_cell-y_grav) #(micrometers)
 	        Layer_dist[50]+=dist
 	        nLayer[50]+=1
-	        if G.node[NwallsJun + cellnumber1]['cgroup']==11 or G.node[NwallsJun + cellnumber1]['cgroup']==23:
+	        if G.nodes[NwallsJun + cellnumber1]['cgroup']==11 or G.nodes[NwallsJun + cellnumber1]['cgroup']==23:
 	           listprotosieve.append(NwallsJun + cellnumber1)
 Nsieve=len(listsieve)
 Nprotosieve=len(listprotosieve)
@@ -574,28 +574,28 @@ Length_cortex_endo_tot=0.0 #Total cross-section membrane length at the interface
 Length_outer_cortex_nospace=0.0 #Cross-section membrane length at the interface between exodermis and cortex not including interfaces with intercellular spaces
 Length_cortex_cortex_nospace=0.0 #Cross-section membrane length at the interface between exodermis and cortex not including interfaces with intercellular spaces
 Length_cortex_endo_nospace=0.0 #Cross-section membrane length at the interface between exodermis and cortex not including interfaces with intercellular spaces
-for node, edges in G.adjacency_iter() :
+for node, edges in G.adjacency() :
     i=indice[node] #Node ID number
     if i>=NwallsJun: #Cell
-        if G.node[i]['cgroup']==16 or G.node[i]['cgroup']==21:
+        if G.nodes[i]['cgroup']==16 or G.nodes[i]['cgroup']==21:
             for neighboor, eattr in edges.items(): #Loop on connections (edges)
-                if eattr['path'] == "plasmodesmata" and (G.node[indice[neighboor]]['cgroup']==11 or G.node[indice[neighboor]]['cgroup']==23): #Plasmodesmata connection  #eattr is the edge attribute (i.e. connection type)
+                if eattr['path'] == "plasmodesmata" and (G.nodes[indice[neighboor]]['cgroup']==11 or G.nodes[indice[neighboor]]['cgroup']==23): #Plasmodesmata connection  #eattr is the edge attribute (i.e. connection type)
                     PPP.append(i-NwallsJun)
-        elif G.node[i]['cgroup']==outercortex_connec_rank or G.node[i]['cgroup']==4 or G.node[i]['cgroup']==3: #exodermis or cortex or endodermis (or epidermis if there is no exodermis)
+        elif G.nodes[i]['cgroup']==outercortex_connec_rank or G.nodes[i]['cgroup']==4 or G.nodes[i]['cgroup']==3: #exodermis or cortex or endodermis (or epidermis if there is no exodermis)
             if i-NwallsJun not in InterCid: #The loop focuses on exo, cortex and endodermis cells that are not intercellular spaces
                 for neighboor, eattr in edges.items(): #Loop on connections (edges)
                     if eattr['path'] == "plasmodesmata": #Plasmodesmata connection  #eattr is the edge attribute (i.e. connection type)
                         j = (indice[neighboor]) #neighbouring node number
                         l_membrane=eattr['length']
-                        if (G.node[i]['cgroup']==outercortex_connec_rank and G.node[j]['cgroup']==4) or (G.node[j]['cgroup']==outercortex_connec_rank and G.node[i]['cgroup']==4):#Exodermis to cortex cell or vice versa (epidermis if no exodermis exists)
+                        if (G.nodes[i]['cgroup']==outercortex_connec_rank and G.nodes[j]['cgroup']==4) or (G.nodes[j]['cgroup']==outercortex_connec_rank and G.nodes[i]['cgroup']==4):#Exodermis to cortex cell or vice versa (epidermis if no exodermis exists)
                             Length_outer_cortex_tot+=l_membrane
                             if j-NwallsJun not in InterCid:
                                 Length_outer_cortex_nospace+=l_membrane
-                        elif (G.node[i]['cgroup']==4 and G.node[j]['cgroup']==4):#Cortex to cortex cell
+                        elif (G.nodes[i]['cgroup']==4 and G.nodes[j]['cgroup']==4):#Cortex to cortex cell
                             Length_cortex_cortex_tot+=l_membrane
                             if j-NwallsJun not in InterCid:
                                 Length_cortex_cortex_nospace+=l_membrane
-                        elif (G.node[i]['cgroup']==3 and G.node[j]['cgroup']==4) or (G.node[j]['cgroup']==3 and G.node[i]['cgroup']==4):#Cortex to endodermis cell or vice versa
+                        elif (G.nodes[i]['cgroup']==3 and G.nodes[j]['cgroup']==4) or (G.nodes[j]['cgroup']==3 and G.nodes[i]['cgroup']==4):#Cortex to endodermis cell or vice versa
                             Length_cortex_endo_tot+=l_membrane
                             if j-NwallsJun not in InterCid:
                                 Length_cortex_endo_nospace+=l_membrane
@@ -746,10 +746,10 @@ for w in Cell2Wall_loop: #Loop on cells. Cell2Wall_loop contains cell wall group
 	for r in w: #Loop for wall elements around the cell
 		wid= int(r.get("id")) #Cell wall ID
 		dist_grav[wid]=sqrt(square(position[wid][0]-x_grav)+square(position[wid][1]-y_grav)) #Distance between membrane and cross section centre of gravity (micrometers)
-		if G.node[NwallsJun + cellnumber1]['cgroup']==4: #Cortex
+		if G.nodes[NwallsJun + cellnumber1]['cgroup']==4: #Cortex
 		    dmax_cortex=max(dmax_cortex,dist_grav[wid])
 		    dmin_cortex=min(dmin_cortex,dist_grav[wid])
-		elif G.node[NwallsJun + cellnumber1]['cgroup']==2: #Epidermis
+		elif G.nodes[NwallsJun + cellnumber1]['cgroup']==2: #Epidermis
 		    davg_epi+=dist_grav[wid]
 		    temp+=1.0
 davg_epi/=temp #Last step of averaging (note that we take both inner and outer membranes into account in the averaging)
@@ -792,19 +792,19 @@ if Paraview==1 or ParTrack==1 or Apo_Contagion>0 or Sym_Contagion>0:
     L_diff=((abs(float(Layer_dist[3]-Layer_dist[2])*1.0E-04),abs(float(Layer_dist[3] - xyl80_dist)*1.0E-04))) #Diffusion lengths (cm)
     twpid=0 #Thick wall point ID
     twpidX=0
-    for node, edges in G.adjacency_iter():
+    for node, edges in G.adjacency():
         wid=indice[node]
         if wid<Nwalls: #wall that is not a junction (connected to a cell)
             for neighboor, eattr in edges.items(): #Loop on connections (edges)
                 cid=int(indice[neighboor])
-                if G.node[cid]['type']=='cell':
+                if G.nodes[cid]['type']=='cell':
                     if not position[cid][0]==position[wid][0]:
                         slopeCG=(position[cid][1]-position[wid][1])/(position[cid][0]-position[wid][0]) #slope of the line connecting the wall node to the center of gravity of the cell
                     else:
                         slopeCG=inf
                     x=position[wid][0]+cos(arctan(slopeCG))*thickness_disp/2*sign(position[cid][0]-position[wid][0]) #-> new position of the wall node on the current cell side
                     y=position[wid][1]+sin(arctan(slopeCG))*thickness_disp/2*sign(position[cid][0]-position[wid][0])
-                    ThickWalls.append(array((twpid,wid,cid,x,y,inf,inf,Borderlink[wid]))) #Adds the thick wall node ID, its parent node ID, the associated cell ID, the new coordinates in X and Y, and the two neighbouring new junction walls IDs (not known at this point in the loop)     G.node[i]['borderlink']
+                    ThickWalls.append(array((twpid,wid,cid,x,y,inf,inf,Borderlink[wid]))) #Adds the thick wall node ID, its parent node ID, the associated cell ID, the new coordinates in X and Y, and the two neighbouring new junction walls IDs (not known at this point in the loop)     G.nodes[i]['borderlink']
                     Cell2ThickWalls[cid-NwallsJun][int(nCell2ThickWalls[cid-NwallsJun])]=twpid
                     nCell2ThickWalls[cid-NwallsJun]+=1
                     ThickWallsX.append((twpidX,x,y,wid,cid)) #Adds the thick wall node ID, the new coordinates in X and Y, its parent node ID, the associated cell ID
@@ -820,7 +820,7 @@ if Paraview==1 or ParTrack==1 or Apo_Contagion>0 or Sym_Contagion>0:
                     nWall2NewWallX[wid]+=1
                     twpid+=1
                     twpidX+=1
-                    if Borderlink[wid]==1: #G.node[wid]['borderlink']==1:
+                    if Borderlink[wid]==1: #G.nodes[wid]['borderlink']==1:
                         x=position[wid][0]-cos(arctan(slopeCG))*thickness_disp/2*sign(position[cid][0]-position[wid][0]) #-> new position of the wall node opposite to the current cell side
                         y=position[wid][1]-sin(arctan(slopeCG))*thickness_disp/2*sign(position[cid][0]-position[wid][0])
                         ThickWallsX.append((twpidX,x,y,wid,inf))
@@ -831,7 +831,7 @@ if Paraview==1 or ParTrack==1 or Apo_Contagion>0 or Sym_Contagion>0:
                         Wall2NewWallX[wid][int(nWall2NewWallX[wid])]=twpidX
                         nWall2NewWallX[wid]+=1
                         twpidX+=1
-                elif G.node[neighboor]['type']=='apo': #Node j is a junction
+                elif G.nodes[neighboor]['type']=='apo': #Node j is a junction
                     Wall2Junction[wid][int(nWall2Junction[wid])]=indice[neighboor]
                     nWall2Junction[wid]+=1
             cid1=Wall2Cell[wid][0]
@@ -869,15 +869,15 @@ else:
     x_rel=empty((NwallsJun+Ncells,1))
     x_rel[:]=NAN
     L_diff=((abs(float(Layer_dist[3]-Layer_dist[2])*1.0E-04),abs(float(Layer_dist[3] - xyl80_dist)*1.0E-04))) #Diffusion lengths (cm)
-    for node, edges in G.adjacency_iter():
+    for node, edges in G.adjacency():
         wid=indice[node]
         if wid<Nwalls: #wall that is not a junction (connected to a cell)
             for neighboor, eattr in edges.items(): #Loop on connections (edges)
                 cid=int(indice[neighboor])
-                if G.node[cid]['type']=='cell':
+                if G.nodes[cid]['type']=='cell':
                     Wall2Cell[wid][int(nWall2Cell[wid])]=cid
                     nWall2Cell[wid]+=1
-                elif G.node[neighboor]['type']=='apo': #Node j is a junction
+                elif G.nodes[neighboor]['type']=='apo': #Node j is a junction
                     Wall2Junction[wid][int(nWall2Junction[wid])]=indice[neighboor]
                     nWall2Junction[wid]+=1
             cid1=Wall2Cell[wid][0]
@@ -902,7 +902,7 @@ else:
         x_rel[wid]=(position[wid][0]-min_x_wall)/(max_x_wall-min_x_wall)
 
 #temp=0
-#for node, edges in G.adjacency_iter():
+#for node, edges in G.adjacency():
 #    for neighboor, eattr in edges.items(): #Loop on connections (edges) separated to make sure that Wall2Cell[i] is complete
 #        temp+=1
     
@@ -910,12 +910,12 @@ else:
 #At this point, nThickWallPolygonX equals 2 (two thick wall nodes for each wall node)
 #We still have to add two more thick junction nodes for each row in nThickWallPolygonX (each row is a "wall polygon")
 if Paraview==1 or ParTrack==1 or Apo_Contagion>0 or Sym_Contagion>0:
-    for node, edges in G.adjacency_iter():
+    for node, edges in G.adjacency():
         i=indice[node]
         if i<Nwalls: #wall that is not a junction (connected to a cell)
             for neighboor, eattr in edges.items(): #Loop on connections (edges) separated to make sure that Wall2Cell[i] is complete
                 j=indice[neighboor]
-                if G.node[j]['type']=='apo': #then j is a junction node 
+                if G.nodes[j]['type']=='apo': #then j is a junction node 
                     for cid in Wall2Cell[i][0:int(nWall2Cell[i])]: #Wall2Cell[i][k] are the cell node ID associated to Wall i
                         if cid not in Junction2Wall2Cell[j-Nwalls]: 
                             Junction2Wall2Cell[j-Nwalls][int(nJunction2Wall2Cell[j-Nwalls])]=cid #Writes the cells indirectly associated to each junction
@@ -947,7 +947,7 @@ if Paraview==1 or ParTrack==1 or Apo_Contagion>0 or Sym_Contagion>0:
                             #Calculating the position of the "thick junction node" on the side of cell cid
                             x=position[j][0]+cos(arctan(slopeCG))*thicknessJunction_disp/2*sign(position[cid][0]-position[j][0])
                             y=position[j][1]+sin(arctan(slopeCG))*thicknessJunction_disp/2*sign(position[cid][0]-position[j][0])
-                            ThickWalls.append(array((twpid,j,int(cid),x,y,twpid1,twpid2,Borderlink[j]))) #Adds the thick wall node ID, its parent node ID, the associated cell ID, the new coordinates in X and Y, and in this case, the two neighbouring walls that will consitute 2 neighbouring "cells" in the sense of pvtk     G.node[j]['borderlink']
+                            ThickWalls.append(array((twpid,j,int(cid),x,y,twpid1,twpid2,Borderlink[j]))) #Adds the thick wall node ID, its parent node ID, the associated cell ID, the new coordinates in X and Y, and in this case, the two neighbouring walls that will consitute 2 neighbouring "cells" in the sense of pvtk     G.nodes[j]['borderlink']
                             ThickWalls[twpid1][int(5+nThickWalls[twpid1])]=twpid
                             ThickWalls[twpid2][int(5+nThickWalls[twpid2])]=twpid
                             nThickWalls[twpid1]+=1
@@ -980,7 +980,7 @@ if Paraview==1 or ParTrack==1 or Apo_Contagion>0 or Sym_Contagion>0:
                             #Increase the wall count
                             twpid+=1
                             twpidX+=1
-                            if Borderlink[j]==1: #G.node[j]['borderlink']==1: #If the wall is at a border, there is only one cell => need to add the opposite new wall node independently
+                            if Borderlink[j]==1: #G.nodes[j]['borderlink']==1: #If the wall is at a border, there is only one cell => need to add the opposite new wall node independently
                                 if not slopeCG==0.0:
                                     slopeCG=-1/slopeCG
                                 else:
@@ -989,7 +989,7 @@ if Paraview==1 or ParTrack==1 or Apo_Contagion>0 or Sym_Contagion>0:
                                 y=position[j][1]-sin(arctan(slopeCG))*thickness_disp/2*sign(position[cid][0]-position[j][0])
                                 ThickWallsX.append((twpidX,x,y,j,inf,i))
                                 #This new wall node is added to the border polygon. Is the border polygon associated to wall node "i" or "wid1"?
-                                if Borderlink[i]==1: #G.node[i]['borderlink']==1:
+                                if Borderlink[i]==1: #G.nodes[i]['borderlink']==1:
                                     wid=i
                                 else:
                                     wid=wid1
@@ -1008,12 +1008,12 @@ if Paraview==1 or ParTrack==1 or Apo_Contagion>0 or Sym_Contagion>0:
                                 nWall2NewWallX[j]+=1
                                 twpidX+=1
 else:
-    for node, edges in G.adjacency_iter():
+    for node, edges in G.adjacency():
         i=indice[node]
         if i<Nwalls: #wall that is not a junction (connected to a cell)
             for neighboor, eattr in edges.items(): #Loop on connections (edges) separated to make sure that Wall2Cell[i] is complete
                 j=indice[neighboor]
-                if G.node[j]['type']=='apo': #then j is a junction node 
+                if G.nodes[j]['type']=='apo': #then j is a junction node 
                     for cid in Wall2Cell[i][0:int(nWall2Cell[i])]: #Wall2Cell[i][k] are the cell node ID associated to Wall i
                         if cid not in Junction2Wall2Cell[j-Nwalls]: 
                             Junction2Wall2Cell[j-Nwalls][int(nJunction2Wall2Cell[j-Nwalls])]=cid #Writes the cells indirectly associated to each junction
@@ -1332,7 +1332,7 @@ for h in range(Nhydraulics):
                 cellnumber1 = int(w.getparent().get("id")) #Cell ID number
                 for r in w: #Loop for wall elements around the cell
                     wid= int(r.get("id")) #Cell wall ID
-                    if G.node[NwallsJun + cellnumber1]['cgroup']==4: #Cortex
+                    if G.nodes[NwallsJun + cellnumber1]['cgroup']==4: #Cortex
                         dist_cell=sqrt(square(position[wid][0]-position[NwallsJun+cellnumber1][0])+square(position[wid][1]-position[NwallsJun+cellnumber1][1])) #distance between wall node and cell node (micrometers)
                         surf=(height+dist_cell)*lengths[wid]*1.0E-08 #(square centimeters)
                         temp+=surf*1.0E-04*(dist_grav[wid]+(ratio_cortex*dmax_cortex-dmin_cortex)/(1-ratio_cortex))
@@ -1397,7 +1397,7 @@ for h in range(Nhydraulics):
         list_ghostjunctions=[] #"Fake junctions" not to be displayed
         nGhostJunction2Wall=0
         #Adding matrix components at cell-cell, cell-wall, and wall-junction connections
-        for node, edges in G.adjacency_iter() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
+        for node, edges in G.adjacency() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
             i=indice[node] #Node ID number
             #Here we count surrounding cell types in order to position apoplastic barriers
             count_endo=0 #total number of endodermis cells around the wall
@@ -1417,19 +1417,19 @@ for h in range(Nhydraulics):
                             count_interC+=1
                             if count_interC==2 and i not in list_ghostwalls:
                                 list_ghostwalls.append(i)
-                        if G.node[neighboor]['cgroup']==3:#Endodermis
+                        if G.nodes[neighboor]['cgroup']==3:#Endodermis
                             count_endo+=1
-                        elif G.node[neighboor]['cgroup']==13 or G.node[neighboor]['cgroup']==19 or G.node[neighboor]['cgroup']==20:#Xylem cell or vessel
+                        elif G.nodes[neighboor]['cgroup']==13 or G.nodes[neighboor]['cgroup']==19 or G.nodes[neighboor]['cgroup']==20:#Xylem cell or vessel
                             count_xyl+=1
                             if (count_xyl==2 and Xylem_pieces) and i not in list_ghostwalls:
                                 list_ghostwalls.append(i)
-                        elif G.node[neighboor]['cgroup']>4:#Pericycle or stele but not xylem
+                        elif G.nodes[neighboor]['cgroup']>4:#Pericycle or stele but not xylem
                             count_stele_overall+=1
-                        elif G.node[neighboor]['cgroup']==4:#Cortex
+                        elif G.nodes[neighboor]['cgroup']==4:#Cortex
                             count_cortex+=1
-                        elif G.node[neighboor]['cgroup']==1:#Exodermis
+                        elif G.nodes[neighboor]['cgroup']==1:#Exodermis
                             count_exo+=1
-                        elif G.node[neighboor]['cgroup']==2:#Epidermis
+                        elif G.nodes[neighboor]['cgroup']==2:#Epidermis
                             count_epi+=1
             
             for neighboor, eattr in edges.items(): #Loop on connections (edges)
@@ -1505,9 +1505,9 @@ for h in range(Nhydraulics):
                         #K = (eattr['kmb']+eattr['kaqp'])*1.0E-08*(height+eattr['dist'])*eattr['length']
                         if Apo_Contagion==2 and Sym_Contagion==2:
                             for carrier in Active_transport_range:
-                                if int(carrier.get("tissue"))==G.node[j]['cgroup']:
+                                if int(carrier.get("tissue"))==G.nodes[j]['cgroup']:
                                     #Condition is that the protoplast (j) is an actual protoplast with membranes
-                                    if j-NwallsJun not in InterCid and not (Barrier>0 and (G.node[j]['cgroup']==13 or G.node[j]['cgroup']==19 or G.node[j]['cgroup']==20)):
+                                    if j-NwallsJun not in InterCid and not (Barrier>0 and (G.nodes[j]['cgroup']==13 or G.nodes[j]['cgroup']==19 or G.nodes[j]['cgroup']==20)):
                                         temp=float(carrier.get("constant"))*(height+eattr['dist'])*eattr['length'] #Linear transport constant (Vmax/KM) [liter/day^-1/micron^-2] * membrane surface [micron²]
                                         if int(carrier.get("direction"))==1: #Influx transporter
                                             if j-NwallsJun not in Sym_Zombie0: #Concentration not affected if set as boundary condition
@@ -1521,13 +1521,13 @@ for h in range(Nhydraulics):
                                                 matrix_C[i][j] += temp #Decrease of concentration in apoplast (i) depends on concentration in protoplast (j)
                                         else:
                                             error('Error, carrier direction is either 1 (influx) or -1 (efflux), please correct in *_Hormones_Carriers_*.xml')
-                        if G.node[j]['cgroup']==1: #Exodermis
+                        if G.nodes[j]['cgroup']==1: #Exodermis
                             kaqp=kaqp_exo
-                        elif G.node[j]['cgroup']==2: #Epidermis
+                        elif G.nodes[j]['cgroup']==2: #Epidermis
                             kaqp=kaqp_epi
-                        elif G.node[j]['cgroup']==3: #Endodermis
+                        elif G.nodes[j]['cgroup']==3: #Endodermis
                             kaqp=kaqp_endo
-                        elif G.node[j]['cgroup']==13 or G.node[j]['cgroup']==19 or G.node[j]['cgroup']==20: #xylem cell or vessel
+                        elif G.nodes[j]['cgroup']==13 or G.nodes[j]['cgroup']==19 or G.nodes[j]['cgroup']==20: #xylem cell or vessel
                             if Barrier>0: #Xylem vessel
                                 kaqp=kaqp_stele*10000 #No membrane resistance because no membrane
                                 if Apo_Contagion==2 and Sym_Contagion==2:
@@ -1541,12 +1541,12 @@ for h in range(Nhydraulics):
                                         matrix_C[j][i] += temp*Diff_PW1
                             else:
                                 kaqp=kaqp_stele
-                        elif G.node[j]['cgroup']>4: #Stele and pericycle but not xylem
+                        elif G.nodes[j]['cgroup']>4: #Stele and pericycle but not xylem
                             kaqp=kaqp_stele
                         elif (j-NwallsJun in InterCid) and Barrier>0: #the neighbour is an intercellular space "cell". Between j and i connected by a membrane, only j can be cell because j>i
                             kaqp=kInterC
                             #No carrier
-                        elif G.node[j]['cgroup']==4: #Cortex
+                        elif G.nodes[j]['cgroup']==4: #Cortex
                             kaqp=float(a_cortex*dist_grav[i]*1.0E-04+b_cortex) #AQP activity (cm/hPa/d)
                             if kaqp < 0:
                                 error('Error, negative kaqp in cortical cell, adjust Paqp_cortex')
@@ -1590,8 +1590,8 @@ for h in range(Nhydraulics):
                         #    print(jmb,'K init',K,'wid',i,'cid',j-NwallsJun)
                         jmb+=1
                     elif path == "plasmodesmata": #Plasmodesmata connection
-                        cgroupi=G.node[i]['cgroup']
-                        cgroupj=G.node[j]['cgroup']
+                        cgroupi=G.nodes[i]['cgroup']
+                        cgroupj=G.nodes[j]['cgroup']
                         if cgroupi==19 or cgroupi==20:  #Xylem in new Cellset version
                             cgroupi=13
                         elif cgroupi==21: #Xylem Pole Pericyle in new Cellset version
@@ -1856,7 +1856,7 @@ for h in range(Nhydraulics):
         
         #Calculation of standard transmembrane fractions
         jmb=0 #Index for membrane conductance vector
-        for node, edges in G.adjacency_iter() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
+        for node, edges in G.adjacency() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
             i = indice[node] #Node ID number
             if i<Nwalls: #wall ID
                 psi = soln[i]    #Node water potential
@@ -1874,17 +1874,17 @@ for h in range(Nhydraulics):
                     if eattr['path'] == 'membrane': #Wall connection
                         if any(passage_cell_ID==array((indice[neighboor])-NwallsJun)):
                             count_passage+=1
-                        if G.node[neighboor]['cgroup']==3:#Endodermis
+                        if G.nodes[neighboor]['cgroup']==3:#Endodermis
                             count_endo+=1
-                        elif G.node[neighboor]['cgroup']>4:#Pericycle or stele
+                        elif G.nodes[neighboor]['cgroup']>4:#Pericycle or stele
                             count_stele_overall+=1
-                        elif G.node[neighboor]['cgroup']==1:#Exodermis
+                        elif G.nodes[neighboor]['cgroup']==1:#Exodermis
                             count_exo+=1
-                        elif G.node[neighboor]['cgroup']==2:#Epidermis
+                        elif G.nodes[neighboor]['cgroup']==2:#Epidermis
                             count_epi+=1
-                        elif G.node[neighboor]['cgroup']==4:#Cortex
+                        elif G.nodes[neighboor]['cgroup']==4:#Cortex
                             count_cortex+=1
-                    # if G.node[neighboor]['cgroup']==5:#Stele
+                    # if G.nodes[neighboor]['cgroup']==5:#Stele
                     #     count_stele+=1
                 for neighboor, eattr in edges.items(): #Loop on connections (edges)
                     j = indice[neighboor] #Neighbouring node ID number
@@ -2062,7 +2062,7 @@ for h in range(Nhydraulics):
             
             if C_flag:
                 jmb=0 #Index for membrane conductance vector
-                for node, edges in G.adjacency_iter() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
+                for node, edges in G.adjacency() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
                     i=indice[node] #Node ID number
                     #Here we count surrounding cell types in order to identify on which side of the endodermis or exodermis we are.
                     count_endo=0 #total number of endodermis cells around the wall
@@ -2076,15 +2076,15 @@ for h in range(Nhydraulics):
                             if eattr['path'] == 'membrane': #Wall connection
                                 if any(passage_cell_ID==array((indice[neighboor])-NwallsJun)):
                                     count_passage+=1
-                                if G.node[neighboor]['cgroup']==3:#Endodermis
+                                if G.nodes[neighboor]['cgroup']==3:#Endodermis
                                     count_endo+=1
-                                elif G.node[neighboor]['cgroup']>4:#Pericycle or stele
+                                elif G.nodes[neighboor]['cgroup']>4:#Pericycle or stele
                                     count_stele_overall+=1
-                                elif G.node[neighboor]['cgroup']==4:#Cortex
+                                elif G.nodes[neighboor]['cgroup']==4:#Cortex
                                     count_cortex+=1
-                                elif G.node[neighboor]['cgroup']==1:#Exodermis
+                                elif G.nodes[neighboor]['cgroup']==1:#Exodermis
                                     count_exo+=1
-                                elif G.node[neighboor]['cgroup']==2:#Epidermis
+                                elif G.nodes[neighboor]['cgroup']==2:#Epidermis
                                     count_epi+=1
                     for neighboor, eattr in edges.items(): #Loop on connections (edges)
                         j = (indice[neighboor]) #neighbouring node number
@@ -2131,13 +2131,13 @@ for h in range(Nhydraulics):
                                         elif row==row_outercortex:
                                             Os_membranes[jmb][1]=Os_c1
                                         s_membranes[jmb]=s_cortex
-                                elif G.node[j]['cgroup']==5:#Stelar parenchyma
+                                elif G.nodes[j]['cgroup']==5:#Stelar parenchyma
                                     Os_membranes[jmb][1]=Os_stele
                                     s_membranes[jmb]=s_stele
                                 elif rank==16:#Pericycle
                                     Os_membranes[jmb][1]=Os_peri
                                     s_membranes[jmb]=s_peri
-                                elif G.node[j]['cgroup']==11 or G.node[j]['cgroup']==23:#Phloem sieve tube cell
+                                elif G.nodes[j]['cgroup']==11 or G.nodes[j]['cgroup']==23:#Phloem sieve tube cell
                                     if not isnan(Os_sieve[0][count]):
                                         if Barrier>0 or j in listprotosieve:
                                             Os_membranes[jmb][1]=float(Os_sieve[0][count])
@@ -2146,13 +2146,13 @@ for h in range(Nhydraulics):
                                     else:
                                         Os_membranes[jmb][1]=Os_stele
                                     s_membranes[jmb]=s_sieve
-                                elif G.node[j]['cgroup']==12 or G.node[j]['cgroup']==26:#Companion cell
+                                elif G.nodes[j]['cgroup']==12 or G.nodes[j]['cgroup']==26:#Companion cell
                                     if not isnan(Os_sieve[0][count]):
                                         Os_membranes[jmb][1]=Os_comp
                                     else:
                                         Os_membranes[jmb][1]=Os_stele
                                     s_membranes[jmb]=s_comp
-                                elif G.node[j]['cgroup']==13 or G.node[j]['cgroup']==19 or G.node[j]['cgroup']==20:#Xylem cell or vessel
+                                elif G.nodes[j]['cgroup']==13 or G.nodes[j]['cgroup']==19 or G.nodes[j]['cgroup']==20:#Xylem cell or vessel
                                     if Barrier==0:
                                         Os_membranes[jmb][1]=Os_stele
                                         s_membranes[jmb]=s_stele
@@ -2224,7 +2224,7 @@ for h in range(Nhydraulics):
                         #temp1=0.0
                         #temp2=0.0
                         jmb=0 #Index for membrane vector
-                        for node, edges in G.adjacency_iter() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
+                        for node, edges in G.adjacency() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
                             i = indice[node] #Node ID number
                             if i<Nwalls: #wall ID
                                 for neighboor, eattr in edges.items(): #Loop on connections (edges)
@@ -2307,7 +2307,7 @@ for h in range(Nhydraulics):
                     print('Error: Cannot have both pressure and pressure change relative to equilibrium as phloem boundary condition')
             
             jmb=0 #Index for membrane conductance vector
-            for node, edges in G.adjacency_iter() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
+            for node, edges in G.adjacency() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
                 i=indice[node] #Node ID number
                 #Here we count surrounding cell types in order to identify on which side of the endodermis or exodermis we are.
                 count_endo=0 #total number of endodermis cells around the wall
@@ -2337,15 +2337,15 @@ for h in range(Nhydraulics):
                         if eattr['path'] == 'membrane': #Wall connection
                             if any(passage_cell_ID==array((indice[neighboor])-NwallsJun)):
                                 count_passage+=1
-                            if G.node[neighboor]['cgroup']==3:#Endodermis
+                            if G.nodes[neighboor]['cgroup']==3:#Endodermis
                                 count_endo+=1
-                            elif G.node[neighboor]['cgroup']>4:#Pericycle or stele
+                            elif G.nodes[neighboor]['cgroup']>4:#Pericycle or stele
                                 count_stele_overall+=1
-                            elif G.node[neighboor]['cgroup']==4:#Cortex
+                            elif G.nodes[neighboor]['cgroup']==4:#Cortex
                                 count_cortex+=1
-                            elif G.node[neighboor]['cgroup']==1:#Exodermis
+                            elif G.nodes[neighboor]['cgroup']==1:#Exodermis
                                 count_exo+=1
-                            elif G.node[neighboor]['cgroup']==2:#Epidermis
+                            elif G.nodes[neighboor]['cgroup']==2:#Epidermis
                                 count_epi+=1
                 for neighboor, eattr in edges.items(): #Loop on connections (edges)
                     j = (indice[neighboor]) #neighbouring node number
@@ -2467,7 +2467,7 @@ for h in range(Nhydraulics):
                                     s_membranes[jmb]=s_cortex
                                     OsWallLayer[row][iMaturity][count]+=Os_soil_local
                                     nOsWallLayer[row][iMaturity][count]+=1
-                            elif G.node[j]['cgroup']==5:#Stelar parenchyma
+                            elif G.nodes[j]['cgroup']==5:#Stelar parenchyma
                                 Os_cells[j-NwallsJun]=Os_stele
                                 Os_membranes[jmb][1]=Os_stele
                                 OsCellLayer[row][iMaturity][count]+=Os_stele
@@ -2495,7 +2495,7 @@ for h in range(Nhydraulics):
                                     OsWallLayer[row][iMaturity][count]+=Os_xyl_local #float(Os_xyl[0][count])
                                     nOsWallLayer[row][iMaturity][count]+=1
                                 s_membranes[jmb]=s_peri
-                            elif G.node[j]['cgroup']==11 or G.node[j]['cgroup']==23:#Phloem sieve tube cell
+                            elif G.nodes[j]['cgroup']==11 or G.nodes[j]['cgroup']==23:#Phloem sieve tube cell
                                 if not isnan(Os_sieve[0][count]):
                                     if Barrier>0 or j in listprotosieve:
                                         Os_cells[j-NwallsJun]=float(Os_sieve[0][count])
@@ -2521,7 +2521,7 @@ for h in range(Nhydraulics):
                                     OsWallLayer[row][iMaturity][count]+=Os_xyl_local #float(Os_xyl[0][count])
                                     nOsWallLayer[row][iMaturity][count]+=1
                                 s_membranes[jmb]=s_sieve
-                            elif G.node[j]['cgroup']==12 or G.node[j]['cgroup']==26:#Companion cell
+                            elif G.nodes[j]['cgroup']==12 or G.nodes[j]['cgroup']==26:#Companion cell
                                 if not isnan(Os_sieve[0][count]):
                                     Os_cells[j-NwallsJun]=Os_comp
                                     Os_membranes[jmb][1]=Os_comp
@@ -2541,7 +2541,7 @@ for h in range(Nhydraulics):
                                     OsWallLayer[row][iMaturity][count]+=Os_xyl_local
                                     nOsWallLayer[row][iMaturity][count]+=1
                                 s_membranes[jmb]=s_comp
-                            elif G.node[j]['cgroup']==13 or G.node[j]['cgroup']==19 or G.node[j]['cgroup']==20:#Xylem cell or vessel
+                            elif G.nodes[j]['cgroup']==13 or G.nodes[j]['cgroup']==19 or G.nodes[j]['cgroup']==20:#Xylem cell or vessel
                                 if Barrier==0:
                                     Os_cells[j-NwallsJun]=Os_stele
                                     Os_membranes[jmb][1]=Os_stele
@@ -2818,7 +2818,7 @@ for h in range(Nhydraulics):
             Fcw_list=[]
             Fcc_list=[]
             jmb=0 #Index for membrane conductance vector
-            for node, edges in G.adjacency_iter() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
+            for node, edges in G.adjacency() : #adjacency_iter returns an iterator of (node, adjacency dict) tuples for all nodes. This is the fastest way to look at every edge. For directed graphs, only outgoing adjacencies are included.
                 i = indice[node] #Node ID number
                 psi = soln[i] #Node water potential
                 psi_o_cell = inf #Opposite cell water potential
@@ -2845,27 +2845,27 @@ for h in range(Nhydraulics):
                                 count_passage+=1
                             if any(InterCid==array((indice[neighboor])-NwallsJun)):
                                 count_interC+=1
-                            if G.node[neighboor]['cgroup']==3:#Endodermis
+                            if G.nodes[neighboor]['cgroup']==3:#Endodermis
                                 count_endo+=1
-                            elif G.node[neighboor]['cgroup']==13 or G.node[neighboor]['cgroup']==19 or G.node[neighboor]['cgroup']==20:#Xylem cell or vessel
+                            elif G.nodes[neighboor]['cgroup']==13 or G.nodes[neighboor]['cgroup']==19 or G.nodes[neighboor]['cgroup']==20:#Xylem cell or vessel
                                 count_xyl+=1
-                            elif G.node[neighboor]['cgroup']==16 or G.node[neighboor]['cgroup']==21:#Pericycle or stele
+                            elif G.nodes[neighboor]['cgroup']==16 or G.nodes[neighboor]['cgroup']==21:#Pericycle or stele
                                 count_peri+=1
                                 if neighboor in PPP:
                                     count_PPP+=1
-                            elif G.node[neighboor]['cgroup']==1:#Exodermis
+                            elif G.nodes[neighboor]['cgroup']==1:#Exodermis
                                 count_exo+=1
-                            elif G.node[neighboor]['cgroup']==2:#Epidermis
+                            elif G.nodes[neighboor]['cgroup']==2:#Epidermis
                                 count_epi+=1
-                            elif G.node[neighboor]['cgroup']==4:#Cortex
+                            elif G.nodes[neighboor]['cgroup']==4:#Cortex
                                 count_cortex+=1
-                            elif G.node[neighboor]['cgroup']==5:#Stelar parenchyma
+                            elif G.nodes[neighboor]['cgroup']==5:#Stelar parenchyma
                                 count_stele+=1
-                            elif G.node[neighboor]['cgroup']==11 or G.node[neighboor]['cgroup']==23:#Phloem sieve tube
+                            elif G.nodes[neighboor]['cgroup']==11 or G.nodes[neighboor]['cgroup']==23:#Phloem sieve tube
                                 count_sieve+=1
-                            elif G.node[neighboor]['cgroup']==12 or G.node[neighboor]['cgroup']==26:#Companion cell
+                            elif G.nodes[neighboor]['cgroup']==12 or G.nodes[neighboor]['cgroup']==26:#Companion cell
                                 count_comp+=1
-                            if G.node[neighboor]['cgroup']>4:#Stele overall
+                            if G.nodes[neighboor]['cgroup']>4:#Stele overall
                                 count_stele_overall+=1
                 ijunction=0
                 for neighboor, eattr in edges.items(): #Loop on connections (edges)
@@ -2937,13 +2937,13 @@ for h in range(Nhydraulics):
                                         nApo_connec_flow[i]+=1
                             elif path == "membrane": #Membrane connection
                                 #K = (eattr['kmb']+eattr['kaqp'])*1.0E-08*(height+eattr['dist'])*eattr['length']
-                                if G.node[j]['cgroup']==1: #Exodermis
+                                if G.nodes[j]['cgroup']==1: #Exodermis
                                     kaqp=kaqp_exo
-                                elif G.node[j]['cgroup']==2: #Epidermis
+                                elif G.nodes[j]['cgroup']==2: #Epidermis
                                     kaqp=kaqp_epi
-                                elif G.node[j]['cgroup']==3: #Endodermis
+                                elif G.nodes[j]['cgroup']==3: #Endodermis
                                     kaqp=kaqp_endo
-                                elif G.node[j]['cgroup']==13 or G.node[j]['cgroup']==19 or G.node[j]['cgroup']==20: #xylem cell or vessel
+                                elif G.nodes[j]['cgroup']==13 or G.nodes[j]['cgroup']==19 or G.nodes[j]['cgroup']==20: #xylem cell or vessel
                                     if Barrier>0: #Xylem vessel
                                         kaqp=kaqp_stele*10000 #No membrane resistance because no membrane
                                         noPD=True
@@ -2951,12 +2951,12 @@ for h in range(Nhydraulics):
                                         kaqp=kaqp_stele
                                         if (count_xyl==2 and Xylem_pieces):
                                             noPD=True
-                                elif G.node[j]['cgroup']>4: #Stele and pericycle
+                                elif G.nodes[j]['cgroup']>4: #Stele and pericycle
                                     kaqp=kaqp_stele
                                 elif (j-NwallsJun in InterCid) and Barrier>0: #the neighbour is an intercellular space "cell"
                                     kaqp=kInterC
                                     noPD=True
-                                elif G.node[j]['cgroup']==4: #Cortex
+                                elif G.nodes[j]['cgroup']==4: #Cortex
                                     kaqp=float(a_cortex*dist_grav[wid]*1.0E-04+b_cortex) #AQP activity (cm/hPa/d)
                                     if kaqp < 0:
                                         error('Error, negative kaqp in cortical cell, adjust Paqp_cortex')
@@ -3534,13 +3534,13 @@ for h in range(Nhydraulics):
                 #        myfile.write(str(float(position[node][0])) + " " + str(float(position[node][1])) + " " + str(0.0) + " \n")
                 #    myfile.write(" \n")
                 #    myfile.write("CELLS " + str(Ncells) + " " + str(Ncells*2) + " \n") #
-                #    for node, edges in G.adjacency_iter():
+                #    for node, edges in G.adjacency():
                 #        i=indice[node]
                 #        if i>=NwallsJun: #Cell node
                 #            myfile.write("1 " + str(i) + " \n")
                 #    myfile.write(" \n")
                 #    myfile.write("CELL_TYPES " + str(Ncells) + " \n") #
-                #    for node, edges in G.adjacency_iter():
+                #    for node, edges in G.adjacency():
                 #        i=indice[node]
                 #        if i>=NwallsJun: #Cell node
                 #            myfile.write("1 \n")
@@ -3723,7 +3723,7 @@ for h in range(Nhydraulics):
                             myfile.write(str(float(position[node][0])) + " " + str(float(position[node][1])) + " " + str(0.0) + " \n")
                         myfile.write(" \n")
                         myfile.write("CELLS " + str(Nwalls*2-len(list_ghostwalls)*2) + " " + str(Nwalls*6-len(list_ghostwalls)*6) + " \n") #len(G.node)
-                        for node, edges in G.adjacency_iter():
+                        for node, edges in G.adjacency():
                             i=indice[node]
                             if i not in list_ghostwalls:
                                 for neighboor, eattr in edges.items(): #Loop on connections (edges)
@@ -3733,7 +3733,7 @@ for h in range(Nhydraulics):
                                         myfile.write(str(2) + " " + str(i) + " " + str(j) + " \n")
                         myfile.write(" \n")
                         myfile.write("CELL_TYPES " + str(Nwalls*2-len(list_ghostwalls)*2) + " \n") #The number of nodes corresponds to the number of wall to wall connections.... to be checked, might not be generality
-                        for node, edges in G.adjacency_iter():
+                        for node, edges in G.adjacency():
                             i=indice[node]
                             if i not in list_ghostwalls:
                                 for neighboor, eattr in edges.items(): #Loop on connections (edges)
@@ -3763,7 +3763,7 @@ for h in range(Nhydraulics):
                             myfile.write(str(float(position[node][0])) + " " + str(float(position[node][1])) + " " + str(0.0) + " \n")
                         myfile.write(" \n")                                     
                         myfile.write("CELLS " + str(Nwalls*2-len(list_ghostwalls)*2+Ncells) + " " + str(Nwalls*6-len(list_ghostwalls)*6+Ncells*2) + " \n") #
-                        for node, edges in G.adjacency_iter():
+                        for node, edges in G.adjacency():
                             i=indice[node]
                             if i not in list_ghostwalls:
                                 for neighboor, eattr in edges.items(): #Loop on connections (edges)
@@ -3775,7 +3775,7 @@ for h in range(Nhydraulics):
                                 myfile.write("1 " + str(i) + " \n")
                         myfile.write(" \n")
                         myfile.write("CELL_TYPES " + str(Nwalls*2-len(list_ghostwalls)*2+Ncells) + " \n") #
-                        for node, edges in G.adjacency_iter():
+                        for node, edges in G.adjacency():
                             i=indice[node]
                             if i not in list_ghostwalls:
                                 for neighboor, eattr in edges.items(): #Loop on connections (edges)
@@ -3789,7 +3789,7 @@ for h in range(Nhydraulics):
                         myfile.write("POINT_DATA " + str(len(G.node)) + " \n")
                         myfile.write("SCALARS Wall_and_Cell_osmotic_pot float \n")
                         myfile.write("LOOKUP_TABLE default \n")
-                        for node, edges in G.adjacency_iter():
+                        for node, edges in G.adjacency():
                             i=indice[node] #Node ID number
                             if i<Nwalls: #Wall node
                                 myfile.write(str(float(Os_walls[i])) + " \n")
@@ -3815,7 +3815,7 @@ for h in range(Nhydraulics):
                             myfile.write(str(float(position[node][0])) + " " + str(float(position[node][1])) + " " + str(0.0) + " \n")
                         myfile.write(" \n")
                         myfile.write("CELLS " + str(Nwalls*2-len(list_ghostwalls)*2+Ncells) + " " + str(Nwalls*6-len(list_ghostwalls)*6+Ncells*2) + " \n") #
-                        for node, edges in G.adjacency_iter():
+                        for node, edges in G.adjacency():
                             i=indice[node]
                             if i not in list_ghostwalls:
                                 for neighboor, eattr in edges.items(): #Loop on connections (edges)
@@ -3827,7 +3827,7 @@ for h in range(Nhydraulics):
                                 myfile.write("1 " + str(i) + " \n")
                         myfile.write(" \n")
                         myfile.write("CELL_TYPES " + str(Nwalls*2-len(list_ghostwalls)*2+Ncells) + " \n") #
-                        for node, edges in G.adjacency_iter():
+                        for node, edges in G.adjacency():
                             i=indice[node]
                             if i not in list_ghostwalls:
                                 for neighboor, eattr in edges.items(): #Loop on connections (edges)
@@ -3861,13 +3861,13 @@ for h in range(Nhydraulics):
                             myfile.write(str(float(position[node][0])) + " " + str(float(position[node][1])) + " " + str(0.0) + " \n")
                         myfile.write(" \n")
                         myfile.write("CELLS " + str(Ncells) + " " + str(Ncells*2) + " \n") #
-                        for node, edges in G.adjacency_iter():
+                        for node, edges in G.adjacency():
                             i=indice[node]
                             if i>=NwallsJun: #Cell node
                                 myfile.write("1 " + str(i) + " \n")
                         myfile.write(" \n")
                         myfile.write("CELL_TYPES " + str(Ncells) + " \n") #
-                        for node, edges in G.adjacency_iter():
+                        for node, edges in G.adjacency():
                             i=indice[node]
                             if i>=NwallsJun: #Cell node
                                 myfile.write("1 \n")
@@ -4120,7 +4120,7 @@ for h in range(Nhydraulics):
                         myfile.write("POINTS "+str(len(PlasmodesmFlowDensity)*12)+" float \n")
                         for ThickWallNode in ThickWalls:
                             if ThickWallNode[1]<Nwalls: #selection of new walls (not new junctions)
-                                if ThickWallNode[7]==0: #new walls that are not at the interface with soil or xylem, where there is no plasmodesmata   #if G.node[int(ThickWallNode[1])]['borderlink']==0
+                                if ThickWallNode[7]==0: #new walls that are not at the interface with soil or xylem, where there is no plasmodesmata   #if G.nodes[int(ThickWallNode[1])]['borderlink']==0
                                     #calculate the XY slope between the two neighbouring new junctions
                                     twpid1=int(ThickWallNode[5])
                                     twpid2=int(ThickWallNode[6])
@@ -4183,7 +4183,7 @@ for h in range(Nhydraulics):
                             myfile.write(str(ThickWallNode[3]) + " " + str(ThickWallNode[4]) + " " + str(height) + " \n")
                         for ThickWallNode in ThickWalls:
                             if ThickWallNode[1]<Nwalls: #selection of new walls (not new junctions)
-                                if ThickWallNode[7]==0: #new walls that are not at the interface with soil or xylem, where there is no plasmodesmata   #if G.node[int(ThickWallNode[1])]['borderlink']==0
+                                if ThickWallNode[7]==0: #new walls that are not at the interface with soil or xylem, where there is no plasmodesmata   #if G.nodes[int(ThickWallNode[1])]['borderlink']==0
                                     #calculate the XY slope between the two neighbouring new junctions
                                     twpid1=int(ThickWallNode[5])
                                     twpid2=int(ThickWallNode[6])
