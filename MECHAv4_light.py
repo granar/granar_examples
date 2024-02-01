@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #Directory
-dir='C:/Users/heymansad/Documents/GitHub/granar_examples/'
+dir='./'
 
 #Project
 Project='Projects/granar/'#BBSRC/'#'Projects/
