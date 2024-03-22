@@ -6,44 +6,8 @@ GRANAR stand for Generator of Root ANAtomy in R. The GRANAR model is able to gen
 
 # How to use GRANAR?
 
-GRANAR is an R package. The *'granar'* package can be found on [GitHub](https://github.com/granar/granar).
-Alternatively, by simply executing the following line in the [R](https://cran.r-project.org/) environment:
-
-```{r}
-install.packages("devtools")
-library(devtools)
-install_github("granar/grarar")
-library(granar)
-```
-
-```{r preambule, echo=T, warning=F, message=F}
-# Load the libraries
-library(xml2)
-library(tidyverse)
-library(plyr)
-library(deldir)
-library(alphahull)
-library(viridis)
-library(cowplot)
-library(retistruct)
-library(Hmisc)
-library(sf)
-```
-
-```{r}
-# Read the parameters
-params <- read_param_xml("Wheat_F_Atkinson_2017.xml.xml")
-```
-
-```{r GRANAR, message = F, warning= F}
-# Run the model
-
-sim <- create_anatomy(parameters = params)
-```
-
-```{r plot}
-# plot the output
-plot_anatomy(sim, col = "type")
-```
+Here is a detailed user guide. 
 
 ![](Wheat.png)
+![](Tomato_primary.png)
+![](Tomato_secondary.png)
