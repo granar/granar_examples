@@ -6,7 +6,7 @@ GRANAR stand for Generator of Root ANAtomy in R. The GRANAR model is able to gen
 
 # How to use GRANAR?
 
-[Here](https://plant-root-soil-interactions-modelling.github.io/CPB-LiDAR/index.html) is a detailed user guide. 
+[Here](https://granar.github.io/granar_examples/) is a detailed user guide. 
 
 ![](Wheat.png)
 ![](Tomato_Primary.png)
