@@ -1,0 +1,115 @@
+---
+title: "GRANAR-MECHA USERGUIDE"
+format: html
+editor: visual
+---
+
+GRANAR
+
+```{r, echo = F}
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # Set working directory to the current file
+
+library(packcircles)
+library(reticulate)
+library(xml2)
+library(tidyverse)
+library(plyr)
+library(devtools)
+library(ggplot2)
+library(dplyr)
+library(sf)
+library(devtools)
+library(deldir)
+```
+
+# GRANAR
+
+```{r}
+# Load GRANAR with local functions
+granar_path <- "../granar/R/"
+for(i in list.files(granar_path)){
+  # print(i)
+  source(paste0(granar_path, i))
+}
+
+```
+
+Granar can be loaded as a package :
+
+```{r, eval = FALSE}
+install_github("granar/granar") 
+```
+
+```{r}
+library(granar)
+```
+
+Here we load and generate model params of 1) Wheat, 2) Primary growth dicot, 3) Secondary growth dicot
+
+```{r}
+param1 <- read_param_xml(path = "modelparam/Wheat_F_Atkinson_2017.xml")
+sim1 <- create_anatomy(parameters = param1)
+plot_anatomy(sim1)
+
+# write_anatomy_xml(sim = sim1, path = "cellsetdata/Wheat.xml")
+
+param2 <- read_param_xml(path = "modelparam/Tomato_primary.xml")
+sim2 <- create_anatomy(parameters = param2)
+plot_anatomy(sim2)
+
+# write_anatomy_xml(sim = sim2, path = "cellsetdata/Tomato_primary.xml")
+
+param3 <- read_param_xml(path = "modelparam/Tomato_secondary.xml")
+sim3 <- create_anatomy(parameters = param3)
+plot_anatomy(sim3)
+
+# write_anatomy_xml(sim = sim3, path = "cellsetdata/Tomato_secondary.xml")
+```
+
+```{r}
+sim1 <- get_root_section(path = "cellsetdata/Wheat.xml")
+
+ggplot(sim1) +
+    # geom_polygon(aes_string("x", "y", group="id_cell", fill=col), colour="white") +
+    geom_polygon(aes(x = x, y = y, fill = type, group = id_cell),
+                 color = "white") +
+    theme_classic() +
+    coord_fixed() +
+    theme(axis.line=element_blank(),
+          axis.text.x=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks=element_blank(),
+          axis.title.x=element_blank(),
+          axis.title.y=element_blank())
+```
+
+# MECHA
+
+MECHA is the solver of local conductivities (Couvreur 2018)
+
+Set up steps to run it in local :
+
+1.  Open **ANACONDA NAVIGATOR**
+
+2.  Create a new environment with **python 3.7** (in this work it is called **GRANAR-MECHA**)\
+    `conda create -n GRANAR-MECHA python=3.7`
+
+3.  Load that environment
+
+    `conda activate GRANAR-MECHA`
+
+4.  Install MECHA requirements in the environement :\
+    `conda install numpy`\
+    `conda install scipy`\
+    `conda install matplotlib`\
+    `conda install lxml`\
+    `conda install pip`\
+    `pip install networkx==1.9.1`
+
+```{r}
+# Load python environment
+use_condaenv("GRANAR-MECHA")
+
+sys <- import("sys", convert=T)
+try(py_run_file("MECHAv4_light.py"))
+```

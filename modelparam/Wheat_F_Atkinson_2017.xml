@@ -6,9 +6,10 @@
 	<!-- General parameters -->
 	<planttype param="1" /> <!-- 1 = monocot / 2 = dicot -->
 	<randomness param="3" />
+	<secondarygrowth param="0" />
 	
 	<!-- Cell layers -->
-	<stele cell_diameter="0.011" n_layers="1" layer_diameter = "0.308" order="1"/>
+	<stele cell_diameter="0.011" n_layers="10" layer_diameter = "0.308" order="1" sd = "0.0006"/>
 	<pericycle cell_diameter="0.0156" n_layers="1"  order="2"/>
 	<endodermis cell_diameter="0.0157" n_layers="1"  order="3"/>
 	<cortex cell_diameter="0.0231" n_layers="7"  order="4"/>
@@ -17,8 +18,8 @@
 
 
 	<!-- Vessels-->
-	<xylem max_size="0.053" n_files="7" order="1.5" ratio ="2" />
-	<phloem max_size="0.01" n_files="3" />
+	<xylem cell_diameter = "0.032" max_size="0.053" n_files="7" n_cells="7" order="1.5" ratio ="2" />
+	<phloem cell_diameter="0.005745" n_layers = "0" order = "1.5" proportion = "0" />
 	
 	<!-- Other cell types -->
 	<!--aerenchyma proportion="0" n_files="10"/-->
