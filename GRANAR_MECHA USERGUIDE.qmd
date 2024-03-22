@@ -23,8 +23,6 @@ for(i in list.files(granar_path)){
 
 ```
 
-Granar can be loaded as a package :
-
 ```{r Github, eval = FALSE}
 install_github("granar/granar") 
 ```
@@ -33,7 +31,7 @@ install_github("granar/granar")
 library(granar)
 ```
 
-Granar was built upon the following dependencies dependencies:
+Granar was built upon the following dependencies :
 
 ```{r preambule, echo=T, warning=F, message=F}
 # setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # Set working directory to the current file
