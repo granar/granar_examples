@@ -32,7 +32,7 @@ library(sf)
 
 ```{r}
 # Read the parameters
-params <- read_param_xml("Zea_mays_1_Heymans_2019.xml")
+params <- read_param_xml("Wheat_F_Atkinson_2017.xml.xml")
 ```
 
 ```{r GRANAR, message = F, warning= F}
@@ -46,4 +46,4 @@ sim <- create_anatomy(parameters = params)
 plot_anatomy(sim, col = "type")
 ```
 
-![](modelparam/Zea_mays.png)
+![](Wheat.png)
