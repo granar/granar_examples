@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<param> 
+	<!-- Hormone convection-diffusion-degradation (activated by setting the value of Sym_contagion and/or Apo_contagion to 2 in *_General.xml)
+	     Hormone movement is calculated at steady-state within the symplast or apoplast.
+		 Degradation
+		 Units: mol degraded / mol-day
+		 The diffusivity & degradation constant allows avoiding the infinite accumulation of solutes in locations that do not export the hormone.
+		 24: average lifetime of an hour (Normanly 1997, Auxin metabolism)
+		 Diffusivity
+		 Units: cm^2 / day
+		 0.00069: value for water in phospholipid bilayers (Khakimov et al. 2008) 8e-13 m^2/s
+		 0.035: value for mannitol in cell walls (Knipfer et al., 2007)
+		 1.2: value for K (Foster & Miklavcic, 2017)
+		 2.0: Value for D2O in water (Spyrou et al., 2016)
+		 Partition coefficient
+		 Units: -
+		 4.2e-5: Water in phospholipid bilayers (Khakimov et al. 2008)
+		 Membrane thickness
+		 Units: micron
+		 3e-3: Phospholipid bilayer thickness (Reus et al., 2008)
+		 The source cells are defined in *_Geometry*.xml, and the concentration in source cells is set to the constant 1 (relative concentration) -->
+	<Hormone_movement>
+	   <Degradation_constant_H1 value="0.0"/>
+	   <MB_H1 Diffusivity="0.00069" Partition_coef="4.2e-5" Thickness="3.0e-3"/>
+	   <Diffusivity_PD_H1 value="0.3"/> <!-- -->
+	   <Diffusivity_PW_H1 value="0.6"/>
+	   <Diffusivity_X_H1 value="2.0"/>
+	   <Dif_BC flag="1"/>
+	   <H1_D2O flag="0"/>
+    </Hormone_movement>
+	
+	<!-- Temporal information for transient simulations of tracer movement 
+		 **Set Transient_sim to 1 in order to simulate tracer transient flow**
+		 Units: day
+		 Time steps are not adaptive
+		 Tracer outputs are recorded at the selected print times, and at time 0
+		 The simulation ends at the last print time -->
+	<Time_information>
+		<Transient_sim value="0"/>
+		<Switch_duration value="1.16e-5"/> <!-- Transition time during which the boundary condition progressively changes from ini to transi values -->
+		<Switch_fractionning value="4.0e1"/> <!-- Fractionning of the transition time into small time steps of duration "Switch_duration/Switch_fractionning" -->
+		<Time_step_transi value="3.48e-5"/> <!-- 3.48e-6 -->
+		<Observation_frequency value="1"/> <!-- How many time steps before saving tracer concentration at observation points -->
+		<Print_times>
+			<Print_time value="5.0e-5"/>
+			<Print_time value="5.0e-4"/>
+			<Print_time value="5.0e-3"/>
+			<Print_time value="1.0e-2"/>
+		</Print_times>
+	</Time_information>
+	
+	<!-- Observation points
+		 Records tracer concentration at all times
+		 id corresponds to the cell id number, starting at 0 (see cell_map from CellSet or Granar)
+		 layer corresponds to the cross-section number, distal being 0 -->
+	<Observation_range> <!-- xylem parenchyma: 24, 29, 43, 51, 67   companion cells: 32, 42, 52, 56 -->
+		<Obs id="-1"  layer="0"/>
+	</Observation_range>
+	
+	<!-- Numerical method to solve transient tracer movement 
+		 1: Explicit
+		 2: Implicit 1
+		 3: Implicit 2
+		 -->
+	<Numerical_method>
+		<Method value="3" />
+	</Numerical_method>
+	
+	<!-- Type of initial conditions for transient simulations of tracer movement 
+		 1: From simulated steady state with prescrbed "concentration_ini" and "flowrate_ini", see Sym_contagion and/or Apo_contagion inputs
+		 2: From prescribed concentrations in *3D_cc*.xml file
+		 -->
+	<Initial_conditions>
+		<Type value="1" path="out\M1v4\Arabido\Project_Flavius_longitudinal_test\NoBarrier_Kpd3\3D_cc_b1,0,t02.xml"/>
+	</Initial_conditions>
+	
+	<!-- Hormone active transport (activated by setting the value of Sym_contagion and Apo_contagion to 2 in *_General.xml)
+	     Active transport is calculated assuming that hormone concentration is low enough to be proportional to concentration (linear part of the Michaelis-Menten curve)
+		 Efflux carriers send the hormone from the symplast to the apoplast, while influx cariiers do the opposite
+		 Active transport constants (=Vmax/KM)
+		 Units: liter / day-micron²
+		 3.9E-16: ABA efflux carrier ABCG25 (Kuromori et al. 2010), assuming 55 kDa carrier, and 100 carriers per micron²
+		 5.8E-14: ABA influx carrier NFP4, previously AIT1 (Kanno et al., 2012), assuming same carrier density as in transformed yeast, and yeast spherical cell diameter of 6 microns
+		 Direction: +1 is influx, -1 is efflux
+		 Tissue: 1 		= exodermis
+				 2 		= epidermis
+				 3 		= endodermis
+				 4 		= cortex
+				 5 		= stele (excluding the pericycle)
+				 11, 23 = phloem
+				 12, 26 = companion cell
+				 13, 19 = protoxylem
+				 13, 20 = metaxylem
+				 16, 21 = pericycle (21 being the xylem pole pericycle)
+		 The source cells are defined below, and the concentration in source cells is set to the constant 1 (relative concentration) -->
+	<Hormone_active_transport>
+		<carrier_range>
+			<carrier tissue="-1"  constant="7.9E-11" direction="-1"/> <!-- xylem parenchyma: 24, 29, 43, 51, 67   companion cells: 32, 42, 52, 56 -->
+		</carrier_range>
+    </Hormone_active_transport>
+	
+	<!-- Symplastic contagion inputs
+		If flow_BC is set to 0: cc_dist is the prescribed static relative concentration in the cell (cc_prox is not used). Units: relative concentration
+		If flow_BC is set to 1: The concentration will be multiplied by the incoming water flow rate in order to get the concentration flux arriving into the cell. Units: relative concentration to be multiplied by the associated convective flux in cm³/d
+		In case of solute flow BC, concentrations in the distal and proximal ends can be prescribed, though only the concentration upstream of water flow will be considered
+		In case of transient simulation, steady-state BC generate initial conditions from the steady-state solution (except if cc prescribed in input file). Transient BC define the new boundary condition at time 0.
+		The current code does not allow to have both pressure- and flux-type boundary conditions at the same node
+		Set Transient_sim to "nan" in Time_information in order not to have a transient simulation
+		-->
+	<Sym_Contagion>
+		<source_range>
+			<Steady-state>
+				<source id="-1" layer_range_min="0" layer_range_max="0" cc_dist="1.000000" cc_prox="0.000100" flow_BC="1"/> <!-- xylem parenchyma: 24, 29, 43, 51, 67   companion cells: 32, 42, 52, 56 -->
+			</Steady-state>
+			<Transient>
+				<source id="-1" layer_range_min="0" layer_range_max="0" cc_dist="0.000100" cc_prox="0.000100" flow_BC="1"/> <!-- xylem parenchyma: 24, 29, 43, 51, 67   companion cells: 32, 42, 52, 56 -->
+			</Transient>
+		</source_range>
+		<target_range>
+			<target id="-1"/> <!-- Low water potential side cortex Hydrotropism: 78, 79 -->
+			<target id="-1"/> <!-- Dry-side cortex Hydropatterning:  (note that the cross-section is flipped as compared to Cell_Map4.png -->
+		</target_range>
+		<immune_range>
+			<immune id="-1"/> 
+		</immune_range>
+	</Sym_Contagion>
+	
+	<!-- Apoplastic contagion inputs 
+		 Cell walls can either be selected through the id number of their cell (see Cell_map*.png) or through their tissue identifier (see above)
+		 For Dirichlet concentration BC at root surface, select tissue "2", prescribe the concentration in cc_soil, and set flow_BC to 0
+		 For Neumann solute flux BC at root surface, select tissue "2", prescribe the concentration in cc_soil, and set flow_BC to 1		 -->
+	<Apo_Contagion>
+		<source_range>
+			<Steady-state>
+				<source tissue="2" id="-1" layer_range_min="0" layer_range_max="170" cc_dist="nan" cc_prox="nan" cc_soil="1.000000" flow_BC="1"/> <!-- xylem parenchyma: 24, 29, 43, 51, 67 -->
+				<source tissue="2" id="-1" layer_range_min="171" layer_range_max="240" cc_dist="nan" cc_prox="nan" cc_soil="0.000000" flow_BC="1"/>
+			</Steady-state>
+			<Transient>
+				<source tissue="2" id="-1" layer_range_min="0" layer_range_max="170" cc_dist="nan" cc_prox="nan" cc_soil="0.000000" flow_BC="1"/> <!-- xylem parenchyma: 24, 29, 43, 51, 67 -->
+				<source tissue="2" id="-1" layer_range_min="171" layer_range_max="240" cc_dist="nan" cc_prox="nan" cc_soil="0.000000" flow_BC="1"/>
+			</Transient>
+		</source_range>
+		<target_range>
+			<target id="-1"/> <!-- Low water potential side cortex Hydrotropism: 78, 79 -->
+			<target id="-1"/> <!-- Dry-side cortex Hydropatterning:  (note that the cross-section is flipped as compared to Cell_Map3.png -->
+		</target_range>
+		<immune_range>
+			<immune id="-1"/> 
+		</immune_range>
+	</Apo_Contagion>
+	
+	<!-- Contact (cell id) is the list of cells in contact with the water meniscus at the interface with the soil  -->
+	<Contactrange>
+		<Contact id="-1"/>
+    </Contactrange>
+	<!-- <Contactrange>
+        <Contact id="-1"/>
+    </Contactrange>  -->
+</param>
+
+

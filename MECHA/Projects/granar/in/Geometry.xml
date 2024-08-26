@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<param>
+  <!-- Plant type -->
+  <Plant value="Root"/>
+  <!--#Maize / Arabido / Millet / Barley /-->
+  <!-- Image path and properties -->
+  <path value="current_root.xml"/>
+  <im_scale value="1000"/>
+  <!-- #image scale (micron per pixel) -->
+  <!-- Maturity level
+        0: No apoplastic barriers
+        1: Endodermal Casparian strip (radial walls)
+        2: Endodermal suberization except at passage cells
+        3: Endodermis full suberization
+        4: Endodermis full suberization and exodermal Casparian strip (radial walls)
+		    5: Endo- and exodermal Casparian strips (radial walls)
+		    6: Exodermis full suberization and endodermal Casparian strip (radial walls)
+		    7: Exodermal Casparian strip (radial walls)		
+        8: Endo- and exodermal full suberization
+        9 : Lignin cap in exodermis and endodermal Casparian strip -->
+  <Maturityrange>
+    <!-- All the listed barrier types will be simulated and reported in separate files "***b1", "***b2", "***b3",... -->
+    <!-- <Maturity Barrier="0" height="200" Nlayers="1"/> -->
+    <Maturity Barrier="1" height="200" Nlayers="1"/>
+    <!-- <Maturity Barrier="2" height="200" Nlayers="1"/> -->
+    <Maturity Barrier="3" height="200" Nlayers="1"/>
+    <!-- <Maturity Barrier="4" height="200" Nlayers="1"/> -->
+    <!-- <Maturity Barrier="5" height="200" Nlayers="1"/> -->
+    <!-- <Maturity Barrier="6" height="200" Nlayers="1"/> -->
+    <!-- <Maturity Barrier="7" height="200" Nlayers="1"/> -->
+    <Maturity Barrier="8" height="200" Nlayers="1"/>
+    <!-- <Maturity Barrier="9" height="200" Nlayers="1"/> -->
+  </Maturityrange>
+  <Printrange>
+    <Print_layer value="0"/>
+  </Printrange>
+  <Xwalls value="1"/>
+  <!-- 0: No transverse walls in the 2D simulations; 1: Transverse walls included in 2D simulations -->
+  <PileUp value="0"/>
+  <!-- 0: Simulating different levels of maturity separately (2D); 1: Simulating all levels of maturity interconnected (3D) -->
+  <!-- Topological info (passage cells and intercellular spaces) -->
+  <passage_cell_range>
+    <passage_cell id="-1"/>
+    <!-- ID number of passage cells in the endodermis, ideally in front of early metaxylem vessels -->
+  </passage_cell_range>
+  <aerenchyma_range>
+  </aerenchyma_range>
+  <InterC_perim_search value="0"/>
+  <!-- 0: no search of intercellular spaces based on their perimeter; 1: search of intercellular spaces based on their perimeter -->
+  <InterC_perim1 value="0"/>
+  <!-- (micrometers) threshold for maximum perimeter of intercellular spaces in first cortical cell layers (next to endodermis) -->
+  <InterC_perim2 value="0"/>
+  <!-- (micrometers) threshold for maximum perimeter of intercellular spaces in 2nd cortical cell layers (next to endodermis) -->
+  <InterC_perim3 value="0"/>
+  <!-- (micrometers) ... -->
+  <InterC_perim4 value="0"/>
+  <!-- (micrometers) ... -->
+  <InterC_perim5 value="0"/>
+  <!-- (micrometers) ... -->
+  <kInterC value="0.0"/>
+  <!-- 0 for air-filled intercellular spaces / inf for water-filled intercellular spaces -->
+  <!-- Geometrical info -->
+  <cell_per_layer cortex="nan" stele="nan"/>
+  <!-- Cell wall properties -->
+  <thickness value="1.5"/>
+  <!-- Double cell wall thickness (microns) Andème-Onzighi et al. (2002)) -->
+  <!-- Plasmodesmata geometrical properties -->
+  <PD_section value="7.47E-5"/>
+  <!-- PD open cross-section (microns^2) (Ehlers and Bel, 1999; Ehlers and Kollmann, 2001) -->
+  <!-- Were xylem vessels cut in smaller pieces (debug) -->
+  <Xylem_pieces flag="0"/>
+  <!-- 0: No; 1: Yes -->
+</param>

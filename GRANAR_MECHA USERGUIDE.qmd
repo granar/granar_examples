@@ -1,9 +1,30 @@
 ---
 title: "GRANAR-MECHA USERGUIDE"
+authors: Adrien Heymans, Marco D'Agostino, Valentin Couvreur, Guillaume Lobet
 format: html
 editor: source
 bibliography: bibliography.bib
 ---
+
+```{r preambule, include=F}
+# setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # Set working directory to the current file
+rm(list = ls())
+
+libs <- c("pander", "readxl", "reticulate", "xml2", "tidyverse", "dplyr", "devtools", "viridis", "ggplot2", "gridExtra", "sf", "deldir", "packcircles")
+# "riot"
+#==========================================================================
+for(pk in libs) {
+  if (!requireNamespace(pk, quietly = TRUE)) {
+    # If not installed, install the package
+    install.packages(pk)
+  }
+  
+  library(pk, character.only = T)
+}
+
+# Load utilitarian functions
+source("functions.R")
+```
 
 # What is GRANAR?
 
@@ -11,42 +32,28 @@ GRANAR stands for Generator of Root ANAtomy in R. The GRANAR model is able to ge
 
 # How to use GRANAR?
 
-GRANAR is available as an R package. The *'granar'* package can be found on [GitHub](https://github.com/granar/granar). Alternatively, GRANAR can be installed localy by simply executing the following line in the [R](https://cran.r-project.org/) environment:
+## Load functions
 
-```{r GRANAR, include  = F, eval = F}
+GRANAR is available as an R package. The *'granar'* package can be found on [GitHub](https://github.com/granar/granar). 
+You can clone the repository with Github desktop and load all functions :
+
+```{r GRANAR, include  = T, eval = T}
 # Load GRANAR with local functions
 granar_path <- "../granar/R/"
 for(i in list.files(granar_path)){
   # print(i)
   source(paste0(granar_path, i))
 }
-
 ```
+
+Alternatively, GRANAR can be installed localy by simply executing the following line in the [R](https://cran.r-project.org/) environment:
 
 ```{r Github, eval = FALSE}
 install_github("granar/granar") 
-```
-
-```{r Load GRANAR}
 library(granar)
 ```
 
-Granar was built upon the following dependencies :
-
-```{r preambule, echo=T, warning=F, message=F}
-# setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) # Set working directory to the current file
-library(packcircles)
-library(reticulate)
-library(xml2)
-library(tidyverse)
-library(plyr)
-library(devtools)
-library(ggplot2)
-library(dplyr)
-library(sf)
-library(devtools)
-library(deldir)
-```
+## Run GRANAR
 
 To run GRANAR, we use :
 
@@ -56,38 +63,38 @@ To run GRANAR, we use :
 
 ### Monocot (wheat)
 
-```{r run GRANAR, results=F}
-param1 <- read_param_xml(path = "modelparam/Wheat_F_Atkinson_2017.xml")
-sim1 <- create_anatomy(parameters = param1)
+```{r run GRANAR, results=F, message=FALSE}
+param1 <- read_param_xml(path = "Params/Wheat_F_Atkinson_2017.xml")
+sim1 <- suppressWarnings(create_anatomy(parameters = param1))
 plot_anatomy(sim1)
 ```
 
 ### Primary growth dicot (tomato)
 
-```{r run GRANAR2, results=F}
-param2 <- read_param_xml(path = "modelparam/Tomato_primary.xml")
-sim2 <- create_anatomy(parameters = param2)
+```{r run GRANAR2, results=F, message=FALSE}
+param2 <- read_param_xml(path = "Params/Tomato_primary.xml")
+sim2 <- suppressWarnings(create_anatomy(parameters = param2))
 plot_anatomy(sim2)
 ```
 
 ### Secondary growth dicot (tomato)
 
-```{r run GRANAR3, results=F}
-param3 <- read_param_xml(path = "modelparam/Tomato_secondary.xml")
-sim3 <- create_anatomy(parameters = param3)
+```{r run GRANAR3, results=F, message=FALSE}
+param3 <- read_param_xml(path = "Params/Tomato_secondary.xml")
+sim3 <- suppressWarnings(create_anatomy(parameters = param3))
 plot_anatomy(sim3)
 ```
 
 To save virtual anatomies, we can use the function *write_anatomy_xml()* :
 
 ```{r write_anatomy, eval = F}
-write_anatomy_xml(sim = sim1, path = "cellsetdata/Wheat.xml")
-write_anatomy_xml(sim = sim2, path = "cellsetdata/Tomato_primary.xml")
-write_anatomy_xml(sim = sim3, path = "cellsetdata/Tomato_secondary.xml")
+write_anatomy_xml(sim = sim1, path = "Anatomies/Wheat.xml")
+write_anatomy_xml(sim = sim2, path = "Anatomies/Tomato_primary.xml")
+write_anatomy_xml(sim = sim3, path = "Anatomies/Tomato_secondary.xml")
 ```
 
 ```{r load anatomy, include = F, eval = F}
-sim1 <- get_root_section(path = "cellsetdata/Wheat.xml")
+sim1 <- get_root_section(path = "Anatomies/Wheat.xml")
 
 ggplot(sim1) +
     # geom_polygon(aes_string("x", "y", group="id_cell", fill=col), colour="white") +
@@ -126,14 +133,67 @@ Set up steps to run it in local :
     `conda install pip`\
     `pip install networkx==1.9.1`
 
-By default, MECHA loads the cross section named *current_root.xml* in the *cellsetdata* folder.
+By default, MECHA loads the cross section named *current_root.xml* in the *cellsetdata* folder, so we need to copy the anatomy we created to that folder ;
 
-```{r MECHA, eval = F}
-# Load python environment
-use_condaenv("GRANAR-MECHA")
-
-sys <- import("sys", convert=T)
-try(py_run_file("MECHAv4_light.py"))
+```{r, eval = F}
+anatomy_file <- "Tomato_primary.xml"
+file.copy(from = paste0("Anatomies/", anatomy_file),to = "MECHA/cellsetdata/", overwrite = T)
+file.rename(paste0("MECHA/cellsetdata/", anatomy_file), "MECHA/cellsetdata/current_root.xml")
 ```
 
-To load outputs of MECHA, we can use the function
+By default, MECHA can simulate different scenarios : \*
+
+-   **B0 : [Special case] No apoplastic barriers **
+
+-   **B1 : Endodermal Casparian strip (radial walls)**
+
+-   **B2 : Endodermal suberization except at passage cells**
+
+-   **B3 : Endodermis full suberization**
+
+-   **B4 : Endodermis full suberization and exodermal Casparian strip (radial walls)**
+
+-   **B5 : Endo- and exodermal Casparian strips (radial walls)**
+
+-   **B6 : Exodermis full suberization and endodermal Casparian strip (radial walls)**
+
+-   **B7 : Exodermal Casparian strip (radial walls)**
+
+-   **B8 : Endo and exodermal suberization**
+
+-   **B9: Lignin Cap and endodermal CS**
+
+Here we choose to compute scenarios 1, 3 and 8. You can change the simulated scenarios in *MECHA/Projects/granar/in/Maize_Geometry.xml* in line 19.
+
+Let's run MECHA :
+
+```{r MECHA, eval = F}
+# use_condaenv("GRANAR-MECHA")
+# sys <- import("sys", convert=T)
+
+unlink("MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/")
+try(py_run_file("MECHA/MECHA_example.py"))
+```
+
+We can visualise the ratio of symplastiv vs. apoplastic flows for each scenario :
+nb ; Graphs are broken with Secondary Growth scenario
+
+```{r, results=F, message=FALSE, warning=FALSE}
+rp <- "MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/"
+
+Flux1 <- ApoSymp(paste0(rp,"Macro_prop_1,0.txt")) # Endodermal CS
+Flux2 <- ApoSymp(paste0(rp,"Macro_prop_3,1.txt")) # Endodermis suberised
+Flux3 <- ApoSymp(paste0(rp,"Macro_prop_8,2.txt")) # Exo- and Endodermis fully suberised
+
+plot_water_flux(Flux1, apobar = 1)
+plot_water_flux(Flux2, apobar = 2)
+plot_water_flux(Flux3, apobar = 3)
+```
+
+We can load radial conductivity $k_r$ and axial conductance $K_x$ :
+
+```{r, message=FALSE}
+conds <- load_MECHA_out()
+pander(conds)
+```
+
