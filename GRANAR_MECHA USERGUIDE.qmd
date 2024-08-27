@@ -2,6 +2,7 @@
 title: "GRANAR-MECHA USERGUIDE"
 authors: Adrien Heymans, Marco D'Agostino, Valentin Couvreur, Guillaume Lobet
 format: html
+output-file: 'index.html'
 editor: source
 bibliography: bibliography.bib
 ---
