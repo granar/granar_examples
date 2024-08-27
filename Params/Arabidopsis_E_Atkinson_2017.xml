@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<granar>
+	
+	<!-- General parameters -->
+	<planttype param="2" /> <!-- 1 = monocot / 2 = dicot -->
+	<randomness param="3" />
+	
+	<!-- Cell layers -->
+	<stele cell_diameter="0.0044" n_layers="1" layer_diameter = "0.027" order="1"/>
+	<pericycle cell_diameter="0.0056" n_layers="1"  order="2"/>
+	<endodermis cell_diameter="0.0083" n_layers="1"  order="3"/>
+	<cortex cell_diameter="0.0227" n_layers="1"  order="4"/>
+	<epidermis cell_diameter="0.0147" n_layers="1" order="6"/>
+
+
+	<!-- Vessels-->
+	<xylem max_size="0.0045" n_files="3" order="1.5" ratio ="1" />
+	<phloem max_size="0.01" n_files="3" />
+	
+	<!-- Other cell types -->
+	<aerenchyma proportion="0" n_files="10"/>
+
+</granar>

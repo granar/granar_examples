@@ -68,6 +68,22 @@ param1 <- read_param_xml(path = "Params/Wheat_F_Atkinson_2017.xml")
 sim1 <- suppressWarnings(create_anatomy(parameters = param1))
 plot_anatomy(sim1)
 ```
+### Maize with aerenchyma
+
+```{r}
+param <- read_param_xml(path = "Params/Zea_mays_Heymans_2019.xml")
+sim <- suppressWarnings(create_anatomy(parameters = param))
+plot_anatomy(sim)
+```
+
+### Rice 
+
+```{r}
+param <- read_param_xml(path = "Params/Rice_D_Atkinson_2017.xml")
+sim <- suppressWarnings(create_anatomy(parameters = param))
+plot_anatomy(sim)
+```
+
 
 ### Primary growth dicot (tomato)
 
