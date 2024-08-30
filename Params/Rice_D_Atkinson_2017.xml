@@ -6,7 +6,6 @@
 	<!-- General parameters -->
 	<planttype param="1" /> <!-- 1 = monocot / 2 = dicot -->
 	<randomness param="2" />
-	<secondarygrowth param="0" />
 	
 	<!-- Cell layers -->
 	<stele cell_diameter="0.0065" n_layers="1" layer_diameter = "0.136" order="1"/>
@@ -19,7 +18,7 @@
 
 	<!-- Vessels-->
 	<xylem max_size="0.0337" n_files="4" order="1.5" ratio ="4.75" />
-	<phloem max_size="0.01" n_files="3" n_layers = "0" order = "1.5" proportion = "0" />/>
+	<phloem max_size="0.01" n_files="3" />
 	
 	<!-- Other cell types -->
 	<!--aerenchyma proportion="0" n_files="10"/-->

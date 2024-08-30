@@ -85,6 +85,13 @@ sim <- suppressWarnings(create_anatomy(parameters = param))
 plot_anatomy(sim)
 ```
 
+### Arabodopsis 
+
+```{r}
+param <- read_param_xml(path = "Params/Arabidopsis.xml")
+sim <- suppressWarnings(create_anatomy(parameters = param))
+plot_anatomy(sim)
+```
 
 ### Primary growth dicot (tomato)
 
