@@ -8,6 +8,7 @@ GRANAR stand for Generator of Root ANAtomy in R. The GRANAR model is able to gen
 
 [Here](https://granar.github.io/granar_examples/) is a detailed user guide. 
 
-![](Wheat.png)
-![](Tomato_Primary.png)
-![](Tomato_Secondary.png)
+<!-- ![](Wheat.png) -->
+<!-- ![](Tomato_Primary.png) -->
+<!-- ![](Tomato_Secondary.png) -->
+![](all_plots.png)

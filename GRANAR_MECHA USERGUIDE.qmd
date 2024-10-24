@@ -163,6 +163,20 @@ By default, MECHA loads the cross section named *current_root.xml* in the *cells
 anatomy_file <- "Tomato_primary.xml"
 file.copy(from = paste0("Anatomies/", anatomy_file),to = "MECHA/cellsetdata/", overwrite = T)
 file.rename(paste0("MECHA/cellsetdata/", anatomy_file), "MECHA/cellsetdata/current_root.xml")
+
+sim1 <- get_root_section(path = paste0("Anatomies/", anatomy_file))
+ggplot(sim1) +
+    # geom_polygon(aes_string("x", "y", group="id_cell", fill=col), colour="white") +
+    geom_polygon(aes(x = x, y = y, fill = type, group = id_cell),
+                 color = "white") +
+    theme_classic() +
+    coord_fixed() +
+    theme(axis.line=element_blank(),
+          axis.text.x=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks=element_blank(),
+          axis.title.x=element_blank(),
+          axis.title.y=element_blank())
 ```
 
 By default, MECHA can simulate different scenarios : \*
