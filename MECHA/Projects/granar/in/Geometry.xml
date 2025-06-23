@@ -22,14 +22,14 @@
     <!-- All the listed barrier types will be simulated and reported in separate files "***b1", "***b2", "***b3",... -->
     <!-- <Maturity Barrier="0" height="200" Nlayers="1"/> -->
     <Maturity Barrier="1" height="200" Nlayers="1"/>
-    <!-- <Maturity Barrier="2" height="200" Nlayers="1"/> -->
+    <Maturity Barrier="2" height="200" Nlayers="1"/>
     <Maturity Barrier="3" height="200" Nlayers="1"/>
-    <!-- <Maturity Barrier="4" height="200" Nlayers="1"/> -->
-    <!-- <Maturity Barrier="5" height="200" Nlayers="1"/> -->
-    <!-- <Maturity Barrier="6" height="200" Nlayers="1"/> -->
-    <!-- <Maturity Barrier="7" height="200" Nlayers="1"/> -->
+    <Maturity Barrier="4" height="200" Nlayers="1"/>
+    <Maturity Barrier="5" height="200" Nlayers="1"/>
+    <Maturity Barrier="6" height="200" Nlayers="1"/>
+    <Maturity Barrier="7" height="200" Nlayers="1"/>
     <Maturity Barrier="8" height="200" Nlayers="1"/>
-    <!-- <Maturity Barrier="9" height="200" Nlayers="1"/> -->
+    <Maturity Barrier="9" height="200" Nlayers="1"/>
   </Maturityrange>
   <Printrange>
     <Print_layer value="0"/>

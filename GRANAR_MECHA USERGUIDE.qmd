@@ -50,8 +50,8 @@ for(i in list.files(granar_path)){
 Alternatively, GRANAR can be installed localy by simply executing the following line in the [R](https://cran.r-project.org/) environment:
 
 ```{r Github, eval = FALSE}
-install_github("granar/granar") 
-library(granar)
+# install_github("granar/granar") 
+# library(granar)
 ```
 
 ## Run GRANAR
@@ -66,14 +66,14 @@ To run GRANAR, we use :
 
 ```{r run GRANAR, results=F, message=FALSE}
 param1 <- read_param_xml(path = "Params/Wheat_F_Atkinson_2017.xml")
-sim1 <- suppressWarnings(create_anatomy(parameters = param1))
+sim1   <- suppressWarnings(create_anatomy(parameters = param1))
 plot_anatomy(sim1)
 ```
 ### Maize with aerenchyma
 
 ```{r}
 param <- read_param_xml(path = "Params/Zea_mays_Heymans_2019.xml")
-sim <- suppressWarnings(create_anatomy(parameters = param))
+sim   <- suppressWarnings(create_anatomy(parameters = param))
 plot_anatomy(sim)
 ```
 
@@ -81,7 +81,7 @@ plot_anatomy(sim)
 
 ```{r}
 param <- read_param_xml(path = "Params/Rice_D_Atkinson_2017.xml")
-sim <- suppressWarnings(create_anatomy(parameters = param))
+sim   <- suppressWarnings(create_anatomy(parameters = param))
 plot_anatomy(sim)
 ```
 
@@ -160,7 +160,7 @@ Set up steps to run it in local :
 By default, MECHA loads the cross section named *current_root.xml* in the *cellsetdata* folder, so we need to copy the anatomy we created to that folder ;
 
 ```{r, eval = F}
-anatomy_file <- "Tomato_primary.xml"
+anatomy_file <- "Wheat.xml"
 file.copy(from = paste0("Anatomies/", anatomy_file),to = "MECHA/cellsetdata/", overwrite = T)
 file.rename(paste0("MECHA/cellsetdata/", anatomy_file), "MECHA/cellsetdata/current_root.xml")
 
@@ -181,7 +181,7 @@ ggplot(sim1) +
 
 By default, MECHA can simulate different scenarios : \*
 
--   **B0 : [Special case] No apoplastic barriers **
+-   **B0 : [Special case for protophloem] No apoplastic barriers **
 
 -   **B1 : Endodermal Casparian strip (radial walls)**
 
@@ -199,17 +199,17 @@ By default, MECHA can simulate different scenarios : \*
 
 -   **B8 : Endo and exodermal suberization**
 
--   **B9: Lignin Cap and endodermal CS**
+-   **B9 : Lignin Cap and endodermal CS**
 
 Here we choose to compute scenarios 1, 3 and 8. You can change the simulated scenarios in *MECHA/Projects/granar/in/Maize_Geometry.xml* in line 19.
 
 Let's run MECHA :
 
 ```{r MECHA, eval = F}
-# use_condaenv("GRANAR-MECHA")
-# sys <- import("sys", convert=T)
+use_condaenv("GRANAR-MECHA")
+sys <- import("sys", convert=T)
 
-unlink("MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/")
+unlink("MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/", force = T)
 try(py_run_file("MECHA/MECHA_example.py"))
 ```
 
@@ -219,9 +219,10 @@ nb ; Graphs are broken with Secondary Growth scenario
 ```{r, results=F, message=FALSE, warning=FALSE}
 rp <- "MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/"
 
-Flux1 <- ApoSymp(paste0(rp,"Macro_prop_1,0.txt")) # Endodermal CS
-Flux2 <- ApoSymp(paste0(rp,"Macro_prop_3,1.txt")) # Endodermis suberised
-Flux3 <- ApoSymp(paste0(rp,"Macro_prop_8,2.txt")) # Exo- and Endodermis fully suberised
+Flux1 <- ApoSymp(paste0(rp,"Macro_prop_1,0.txt")) 
+Flux2 <- ApoSymp(paste0(rp,"Macro_prop_2,1.txt")) 
+Flux3 <- ApoSymp(paste0(rp,"Macro_prop_3,2.txt")) 
+
 
 plot_water_flux(Flux1, apobar = 1)
 plot_water_flux(Flux2, apobar = 2)
@@ -231,7 +232,39 @@ plot_water_flux(Flux3, apobar = 3)
 We can load radial conductivity $k_r$ and axial conductance $K_x$ :
 
 ```{r, message=FALSE}
+# Load Barriers names and IDs
+Barrier_types <- read_xlsx("./MECHA/Barrier_types.xlsx") %>% 
+  mutate(ID = as.factor(ID)) %>% 
+  mutate(Barrier_name = paste0("En.", Endodermis, " - Ex.", Exodermis))
+
+# Use custom function to load outputs of MECHA
 conds <- load_MECHA_out()
-pander(conds)
+
+# Process and select the outputs
+conds <- conds %>% 
+  mutate(ID = as.factor(ID),
+         kr = as.numeric(kr),
+         Kx = as.numeric(Kx)) %>% 
+  left_join(Barrier_types, by = "ID") %>% 
+  filter(Endodermis %in% c("-", "CS", "Sub") & Exodermis %in% c("-", "CS", "Sub"))
+
+conds <- conds[order(conds$kr),]
+# pander(conds)
+
+# Quick and uggly Plot
+ggplot(data = conds) +
+  geom_col(aes(x = Barrier_name, 
+               y = kr,
+               fill = Endodermis,
+               color = Exodermis
+               ),
+           size = 2,
+           width = 0.85
+           ) +
+  scale_color_viridis(discrete = T) +
+  scale_fill_viridis(discrete = T) +
+  theme_test() +
+  # facet_wrap(~Exodermis) +
+  theme(axis.text.x = element_text(angle = 90))
 ```
 
