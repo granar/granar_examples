@@ -140,8 +140,8 @@ div.csl-indent {
 </div>
 <p>Alternatively, GRANAR can be installed localy by simply executing the following line in the <a href="https://cran.r-project.org/">R</a> environment:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">"granar/granar"</span>) </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(granar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install_github("granar/granar") </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(granar)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="run-granar" class="level2">
@@ -156,7 +156,7 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="monocot-wheat">Monocot (wheat)</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>param1 <span class="ot">&lt;-</span> <span class="fu">read_param_xml</span>(<span class="at">path =</span> <span class="st">"Params/Wheat_F_Atkinson_2017.xml"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sim1 <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">create_anatomy</span>(<span class="at">parameters =</span> param1))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sim1   <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">create_anatomy</span>(<span class="at">parameters =</span> param1))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_anatomy</span>(sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
@@ -172,7 +172,7 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="maize-with-aerenchyma">Maize with aerenchyma</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>param <span class="ot">&lt;-</span> <span class="fu">read_param_xml</span>(<span class="at">path =</span> <span class="st">"Params/Zea_mays_Heymans_2019.xml"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">create_anatomy</span>(<span class="at">parameters =</span> param))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sim   <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">create_anatomy</span>(<span class="at">parameters =</span> param))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>1/10</code></pre>
 </div>
@@ -204,7 +204,7 @@ div.csl-indent {
 <pre><code>10/10</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Time difference of 6.251544 secs</code></pre>
+<pre><code>Time difference of 4.098766 secs</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_anatomy</span>(sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -216,7 +216,7 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="rice">Rice</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>param <span class="ot">&lt;-</span> <span class="fu">read_param_xml</span>(<span class="at">path =</span> <span class="st">"Params/Rice_D_Atkinson_2017.xml"</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">create_anatomy</span>(<span class="at">parameters =</span> param))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>sim   <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">create_anatomy</span>(<span class="at">parameters =</span> param))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>1/17</code></pre>
 </div>
@@ -269,7 +269,7 @@ div.csl-indent {
 <pre><code>17/17</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Time difference of 7.037845 secs</code></pre>
+<pre><code>Time difference of 4.920541 secs</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_anatomy</span>(sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -287,7 +287,7 @@ div.csl-indent {
 </div>
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">create_anatomy</span>(<span class="at">parameters =</span> param))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Time difference of 0.7477031 secs</code></pre>
+<pre><code>Time difference of 0.7128708 secs</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_anatomy</span>(sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -345,7 +345,7 @@ div.csl-indent {
 </ol>
 <p>By default, MECHA loads the cross section named <em>current_root.xml</em> in the <em>cellsetdata</em> folder, so we need to copy the anatomy we created to that folder ;</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>anatomy_file <span class="ot">&lt;-</span> <span class="st">"Tomato_primary.xml"</span></span>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>anatomy_file <span class="ot">&lt;-</span> <span class="st">"Wheat.xml"</span></span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">file.copy</span>(<span class="at">from =</span> <span class="fu">paste0</span>(<span class="st">"Anatomies/"</span>, anatomy_file),<span class="at">to =</span> <span class="st">"MECHA/cellsetdata/"</span>, <span class="at">overwrite =</span> T)</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">file.rename</span>(<span class="fu">paste0</span>(<span class="st">"MECHA/cellsetdata/"</span>, anatomy_file), <span class="st">"MECHA/cellsetdata/current_root.xml"</span>)</span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -365,7 +365,7 @@ div.csl-indent {
 </div>
 <p>By default, MECHA can simulate different scenarios : *</p>
 <ul>
-<li><p><strong>B0 : [Special case] No apoplastic barriers </strong></p></li>
+<li><p><strong>B0 : [Special case for protophloem] No apoplastic barriers </strong></p></li>
 <li><p><strong>B1 : Endodermal Casparian strip (radial walls)</strong></p></li>
 <li><p><strong>B2 : Endodermal suberization except at passage cells</strong></p></li>
 <li><p><strong>B3 : Endodermis full suberization</strong></p></li>
@@ -374,26 +374,27 @@ div.csl-indent {
 <li><p><strong>B6 : Exodermis full suberization and endodermal Casparian strip (radial walls)</strong></p></li>
 <li><p><strong>B7 : Exodermal Casparian strip (radial walls)</strong></p></li>
 <li><p><strong>B8 : Endo and exodermal suberization</strong></p></li>
-<li><p><strong>B9: Lignin Cap and endodermal CS</strong></p></li>
+<li><p><strong>B9 : Lignin Cap and endodermal CS</strong></p></li>
 </ul>
 <p>Here we choose to compute scenarios 1, 3 and 8. You can change the simulated scenarios in <em>MECHA/Projects/granar/in/Maize_Geometry.xml</em> in line 19.</p>
 <p>Let’s run MECHA :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use_condaenv("GRANAR-MECHA")</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sys &lt;- import("sys", convert=T)</span></span>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_condaenv</span>(<span class="st">"GRANAR-MECHA"</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>sys <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"sys"</span>, <span class="at">convert=</span>T)</span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(<span class="st">"MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/"</span>)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(<span class="st">"MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/"</span>, <span class="at">force =</span> T)</span>
 <span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">py_run_file</span>(<span class="st">"MECHA/MECHA_example.py"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can visualise the ratio of symplastiv vs.&nbsp;apoplastic flows for each scenario : nb ; Graphs are broken with Secondary Growth scenario</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>rp <span class="ot">&lt;-</span> <span class="st">"MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/"</span></span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>Flux1 <span class="ot">&lt;-</span> <span class="fu">ApoSymp</span>(<span class="fu">paste0</span>(rp,<span class="st">"Macro_prop_1,0.txt"</span>)) <span class="co"># Endodermal CS</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>Flux2 <span class="ot">&lt;-</span> <span class="fu">ApoSymp</span>(<span class="fu">paste0</span>(rp,<span class="st">"Macro_prop_3,1.txt"</span>)) <span class="co"># Endodermis suberised</span></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>Flux3 <span class="ot">&lt;-</span> <span class="fu">ApoSymp</span>(<span class="fu">paste0</span>(rp,<span class="st">"Macro_prop_8,2.txt"</span>)) <span class="co"># Exo- and Endodermis fully suberised</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>Flux1 <span class="ot">&lt;-</span> <span class="fu">ApoSymp</span>(<span class="fu">paste0</span>(rp,<span class="st">"Macro_prop_1,0.txt"</span>)) </span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>Flux2 <span class="ot">&lt;-</span> <span class="fu">ApoSymp</span>(<span class="fu">paste0</span>(rp,<span class="st">"Macro_prop_2,1.txt"</span>)) </span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>Flux3 <span class="ot">&lt;-</span> <span class="fu">ApoSymp</span>(<span class="fu">paste0</span>(rp,<span class="st">"Macro_prop_3,2.txt"</span>)) </span>
 <span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_water_flux</span>(Flux1, <span class="at">apobar =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_water_flux</span>(Flux1, <span class="at">apobar =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="GRANAR_MECHA-USERGUIDE_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -408,45 +409,42 @@ div.csl-indent {
 </div>
 <p>We can load radial conductivity <span class="math inline">\(k_r\)</span> and axial conductance <span class="math inline">\(K_x\)</span> :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>conds <span class="ot">&lt;-</span> <span class="fu">load_MECHA_out</span>()</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(conds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Barriers names and IDs</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>Barrier_types <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"./MECHA/Barrier_types.xlsx"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID =</span> <span class="fu">as.factor</span>(ID)) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Barrier_name =</span> <span class="fu">paste0</span>(<span class="st">"En."</span>, Endodermis, <span class="st">" - Ex."</span>, Exodermis))</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Use custom function to load outputs of MECHA</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>conds <span class="ot">&lt;-</span> <span class="fu">load_MECHA_out</span>()</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Process and select the outputs</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>conds <span class="ot">&lt;-</span> conds <span class="sc">%&gt;%</span> </span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID =</span> <span class="fu">as.factor</span>(ID),</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">kr =</span> <span class="fu">as.numeric</span>(kr),</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">Kx =</span> <span class="fu">as.numeric</span>(Kx)) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(Barrier_types, <span class="at">by =</span> <span class="st">"ID"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Endodermis <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"-"</span>, <span class="st">"CS"</span>, <span class="st">"Sub"</span>) <span class="sc">&amp;</span> Exodermis <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"-"</span>, <span class="st">"CS"</span>, <span class="st">"Sub"</span>))</span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>conds <span class="ot">&lt;-</span> conds[<span class="fu">order</span>(conds<span class="sc">$</span>kr),]</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a><span class="co"># pander(conds)</span></span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick and uggly Plot</span></span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> conds) <span class="sc">+</span></span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> Barrier_name, </span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> kr,</span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> Endodermis,</span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> Exodermis</span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a>               ),</span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a>           <span class="at">width =</span> <span class="fl">0.85</span></span>
+<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a>           ) <span class="sc">+</span></span>
+<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> T) <span class="sc">+</span></span>
+<span id="cb51-31"><a href="#cb51-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>(<span class="at">discrete =</span> T) <span class="sc">+</span></span>
+<span id="cb51-32"><a href="#cb51-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_test</span>() <span class="sc">+</span></span>
+<span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># facet_wrap(~Exodermis) +</span></span>
+<span id="cb51-34"><a href="#cb51-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 29%">
-<col style="width: 33%">
-<col style="width: 29%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">ID</th>
-<th style="text-align: center;">Kx</th>
-<th style="text-align: center;">kr</th>
-<th style="text-align: center;">perimeter</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0.02385859366092221</td>
-<td style="text-align: center;">0.0001254278440673108</td>
-<td style="text-align: center;">0.10262259718130115</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">0.02385859366092221</td>
-<td style="text-align: center;">4.4759914335687034e-05</td>
-<td style="text-align: center;">0.10262259718130115</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">0.02385859366092221</td>
-<td style="text-align: center;">3.721398193800901e-05</td>
-<td style="text-align: center;">0.10262259718130115</td>
-</tr>
-</tbody>
-</table>
+<p><img src="GRANAR_MECHA-USERGUIDE_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
