@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<param>
+  <path_hydraulics>
+    <Output path="results/"/>
+  </path_hydraulics>
+  <kwrange>
+    <kw value="3e-05"/>
+  </kwrange>
+  <kw_barrier_range>
+    <kw_barrier Casp="1.0e-016" Sub="1e-16"/>
+  </kw_barrier_range>
+  <km value="3e-05"/>
+  <kAQPrange>
+    <kAQP value="0.001" epi_factor="1" exo_factor="1" cortex_factor="1" endo_factor="1" stele_factor="1"/>
+  </kAQPrange>
+  <ratio_cortex value="1"/>
+  <Kplrange>
+    <Kpl value="5.300000E-12" cortex_factor="1.000000E+00" PCC_factor="1.000000E+00" PPP_factor="1.000000E+00" PST_factor="1.000000E+00"/>
+    <Kpl value="3.100000E-11" cortex_factor="1.000000E+00" PCC_factor="1.000000E+00" PPP_factor="1.000000E+00" PST_factor="1.000000E+00"/>
+  </Kplrange>
+  <Freq_source value="1"/>
+  <Freq_factor value="1"/>
+  <Fplxheight value="8e+05"/>
+  <Fplxheight_epi_exo value="1080000"/>
+  <Fplxheight_outer_cortex value="2280000"/>
+  <Fplxheight_cortex_cortex value="860000"/>
+  <Fplxheight_cortex_endo value="880000"/>
+  <Fplxheight_endo_endo value="640000"/>
+  <Fplxheight_endo_peri value="960000"/>
+  <Fplxheight_peri_peri value="7e+05"/>
+  <Fplxheight_peri_stele value="1080000"/>
+  <Fplxheight_stele_stele value="640000"/>
+  <Fplxheight_stele_comp value="980000"/>
+  <Fplxheight_peri_comp value="7e+05"/>
+  <Fplxheight_comp_comp value="680000"/>
+  <Fplxheight_comp_sieve value="1760000"/>
+  <Fplxheight_peri_sieve value="720000"/>
+  <Fplxheight_stele_sieve value="9e+05"/>
+  <Defheight value="200"/>
+  <Kax_source value="1"/>
+  <K_sieve_range>
+    <K_sieve id="-1" value="0"/>
+  </K_sieve_range>
+  <K_xyl_range>
+    <K_xyl id="-1" value="1E-06"/>
+  </K_xyl_range>
+  <Xcontactrange>
+    <Xcontact value="0"/>
+  </Xcontactrange>
+</param>

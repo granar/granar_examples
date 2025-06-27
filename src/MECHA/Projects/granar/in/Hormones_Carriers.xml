@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<param>
+  <Hormone_movement>
+    <Degradation_constant_H1 value="0"/>
+    <MB_H1 Diffusivity="0.00069" Partition_coef="4.2e-5" Thickness="3.0e-3"/>
+    <Diffusivity_PD_H1 value="0.3"/>
+    <Diffusivity_PW_H1 value="0.6"/>
+    <Diffusivity_X_H1 value="2"/>
+    <Dif_BC flag="1"/>
+    <H1_D2O flag="0"/>
+  </Hormone_movement>
+  <Time_information>
+    <Transient_sim value="0"/>
+    <Switch_duration value="1.16e-5"/>
+    <Switch_fractionning value="4.0e1"/>
+    <Time_step_transi value="3.48e-5"/>
+    <Observation_frequency value="1"/>
+    <Print_times>
+      <Print_time value="5.0e-5"/>
+      <Print_time value="5.0e-4"/>
+      <Print_time value="5.0e-3"/>
+      <Print_time value="1.0e-2"/>
+    </Print_times>
+  </Time_information>
+  <Observation_range>
+    <Obs id="-1" layer="0"/>
+  </Observation_range>
+  <Numerical_method>
+    <Method value="3"/>
+  </Numerical_method>
+  <Initial_conditions>
+    <Type value="1" path="out\M1v4\Arabido\Project_Flavius_longitudinal_test\NoBarrier_Kpd3\3D_cc_b1,0,t02.xml"/>
+  </Initial_conditions>
+  <Hormone_active_transport>
+    <carrier_range>
+      <carrier tissue="-1" constant="7.9e-11" direction="-1"/>
+    </carrier_range>
+  </Hormone_active_transport>
+  <Sym_Contagion>
+    <source_range>
+      <Steady-state>
+        <source id="-1" layer_range_min="0" layer_range_max="0" cc_dist="1" cc_prox="1e-04" flow_BC="1"/>
+      </Steady-state>
+      <Transient>
+        <source id="-1" layer_range_min="0" layer_range_max="0" cc_dist="1e-04" cc_prox="1e-04" flow_BC="1"/>
+      </Transient>
+    </source_range>
+    <target_range>
+      <target id="-1"/>
+      <target id="-1"/>
+    </target_range>
+    <immune_range>
+      <immune id="-1"/>
+    </immune_range>
+  </Sym_Contagion>
+  <Apo_Contagion>
+    <source_range>
+      <Steady-state>
+        <source tissue="2" id="-1" layer_range_min="0" layer_range_max="170" cc_dist="nan" cc_prox="nan" cc_soil="1.000000E+00" flow_BC="1"/>
+        <source tissue="2" id="-1" layer_range_min="171" layer_range_max="240" cc_dist="nan" cc_prox="nan" cc_soil="0.000000E+00" flow_BC="1"/>
+      </Steady-state>
+      <Transient>
+        <source tissue="2" id="-1" layer_range_min="0" layer_range_max="170" cc_dist="nan" cc_prox="nan" cc_soil="0.000000E+00" flow_BC="1"/>
+        <source tissue="2" id="-1" layer_range_min="171" layer_range_max="240" cc_dist="nan" cc_prox="nan" cc_soil="0.000000E+00" flow_BC="1"/>
+      </Transient>
+    </source_range>
+    <target_range>
+      <target id="-1"/>
+      <target id="-1"/>
+    </target_range>
+    <immune_range>
+      <immune id="-1"/>
+    </immune_range>
+  </Apo_Contagion>
+  <Contactrange>
+    <Contact id="-1"/>
+  </Contactrange>
+</param>

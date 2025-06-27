@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+  <path_scenarios>
+    <Output path="Project_Test/"/>
+  </path_scenarios>
+  <Psi_soil_range>
+    <osmotic_convection flag="0"/>
+    <osmotic_diffusivity value="0"/>
+    <Psi_soil pressure_left="0.000000E+00" pressure_right="0.000000E+00" osmotic_left="0.000000E+00" osmotic_right="0.000000E+00" osmotic_symmetry="1" osmotic_shape="1"/>
+    <Psi_soil pressure_left="0.000000E+00" pressure_right="0.000000E+00" osmotic_left="0.000000E+00" osmotic_right="0.000000E+00" osmotic_symmetry="1" osmotic_shape="1"/>
+  </Psi_soil_range>
+  <BC_xyl_range>
+    <osmotic_convection flag="0"/>
+    <osmotic_diffusivity value="0"/>
+    <BC_xyl pressure_prox="-5.0E3" deltaP_prox="nan" pressure_dist="nan" flowrate_prox="nan" flowrate_dist="nan" osmotic_endo="0.000000E+00" osmotic_xyl="0.000000E+00" osmotic_symmetry="1" osmotic_shape="1"/>
+    <BC_xyl pressure_prox="-5.0E3" deltaP_prox="nan" pressure_dist="nan" flowrate_prox="nan" flowrate_dist="nan" osmotic_endo="0.000000E+00" osmotic_xyl="0.000000E+00" osmotic_symmetry="1" osmotic_shape="1"/>
+  </BC_xyl_range>
+  <BC_sieve_range>
+    <BC_sieve pressure_prox="8.000000E+03" deltaP_prox="nan" pressure_dist="nan" flowrate_prox="nan" flowrate_dist="nan" osmotic="0.000000E+00"/>
+    <BC_sieve pressure_prox="nan" deltaP_prox="nan" pressure_dist="nan" flowrate_prox="nan" flowrate_dist="nan" osmotic="0.000000E+00"/>
+  </BC_sieve_range>
+  <Psi_cell_range>
+    <Psi_cell Os_cortex="0" Os_hetero="0" s_hetero="0" s_factor="1.000000E+00"/>
+    <Psi_cell Os_cortex="0" Os_hetero="0" s_hetero="0" s_factor="1.000000E+00"/>
+  </Psi_cell_range>
+  <Elong_cell_range>
+    <Elong_cell midpoint_rate="0" side_rate_difference="0"/>
+    <Elong_cell midpoint_rate="0" side_rate_difference="0.000000E+00"/>
+  </Elong_cell_range>
+  <Water_fractions Symplast="0.7" Apoplast="0.69"/>
+</properties>

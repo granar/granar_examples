@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<param>
+  <Plant value="Root"/>
+  <path value="current_root.xml"/>
+  <im_scale value="1000"/>
+  <Maturityrange>
+    <Maturity Barrier="1" height="200" Nlayers="1"/>
+    <Maturity Barrier="2" height="200" Nlayers="1"/>
+    <Maturity Barrier="3" height="200" Nlayers="1"/>
+    <Maturity Barrier="4" height="200" Nlayers="1"/>
+    <Maturity Barrier="5" height="200" Nlayers="1"/>
+    <Maturity Barrier="6" height="200" Nlayers="1"/>
+    <Maturity Barrier="7" height="200" Nlayers="1"/>
+    <Maturity Barrier="8" height="200" Nlayers="1"/>
+    <Maturity Barrier="9" height="200" Nlayers="1"/>
+  </Maturityrange>
+  <Printrange>
+    <Print_layer value="0"/>
+  </Printrange>
+  <Xwalls value="1"/>
+  <PileUp value="0"/>
+  <passage_cell_range>
+    <passage_cell id="-1"/>
+  </passage_cell_range>
+  <InterC_perim_search value="0"/>
+  <InterC_perim1 value="0"/>
+  <InterC_perim2 value="0"/>
+  <InterC_perim3 value="0"/>
+  <InterC_perim4 value="0"/>
+  <InterC_perim5 value="0"/>
+  <kInterC value="0"/>
+  <cell_per_layer cortex="nan" stele="nan"/>
+  <thickness value="1.5"/>
+  <PD_section value="7.47e-05"/>
+  <Xylem_pieces flag="0"/>
+</param>

@@ -1,27 +1,45 @@
 # -*- coding: utf-8 -*-
 
+#TOCONFIRM: rhs_C -> xylemconcentration dist & prox -> sym_cc_flows prox & dist should be ok
+
+#TODO: Fix mass balance estimation
+#TODO: Check Role of Defheight vs height in Fpli and Flowdensity through plasmodesmata
+#TODO: Double check row for passage cells
+#TODO: Read initial condition from xml file
+#TODO: Fix 3D_cc* files for simulation initial conditions (currently cc from only one layer saved)
+#TODO: cell types 23 and 26
+#TODO: Import of multilayered initial data of solute cc
+#TODO: turn wallflowdensity rows into full arrays?
+#TODO: longitudinal carriers
+#TODO: Loop radial water velocity & solute
+#TODO: Check/remove? PileUp option
+
 #Directory
-dir=''
+dir = './src/MECHA/'
 
 #Project
-Project='Projects/granar_example/' # 
+Project='Projects/granar/' #'PlantPhys/' #'Projects/Flavius/' #GRANAR/'#Yoan/'#Sixtine/'#BBSRC/'#'Projects/
 
-inputs='in/'
-Gen='General.xml'
-Geom='Geometry.xml'
-Hydr='Hydraulics.xml'
-BC='BC.xml'
-Horm='Hormones_Carriers.xml'
-Cell_connec_max=50
-Ncellperimeters=100
-V_modifier=1.0
-test_mass_balance=0
-maxCell2ThickWalls=101
-matrix_analysis=0
+#Inputs
 
+if Project=='Projects/granar/':
+    inputs='in/'
+    Gen='General.xml'
+    Geom='Geometry.xml'
+    Hydr='Hydraulics.xml'
+    BC='BC.xml'#'Maize_BC_kr.xml'
+    Horm='Hormones_Carriers.xml'
+    Cell_connec_max=50
+    Ncellperimeters=100
+    V_modifier=1.0
+    test_mass_balance=0
+    maxCell2ThickWalls=101
+    #DF_axial_factor=1.0
+    #K_axial_factor=1.0
+    matrix_analysis=0
 
 #Libraries
-print('Importing libraries')
+# print('Importing libraries')
 import time
 t0 = time.perf_counter()
     
@@ -57,13 +75,13 @@ import sys, os # On importe le module os qui dispose de variables
                # et de fonctions utiles pour dialoguer avec votre 
                # système d'exploitation
 t1 = time.perf_counter()
-print(t1-t0, "seconds process time")
+# print(t1-t0, "seconds process time")
 
 #Precision
 dp = np.dtype((np.float64))
 
 #Import General data
-print('Importing geometrical data')
+# print('Importing geometrical data')
 t0 = time.perf_counter()
 OS=etree.parse(dir + Project + inputs + Gen).getroot().xpath('OS')[0].get("value")
 Output_path=etree.parse(dir + Project + inputs + Gen).getroot().xpath('Output')[0].get("path")
@@ -99,7 +117,7 @@ for passage_cell in passage_cell_range:
 PPP=list()
 InterCid=list() #Aerenchyma is classified as intercellular space
 for aerenchyma in aerenchyma_range:
-    if not int(aerenchyma.get("id"))>9E5:
+    if not int(aerenchyma.get("id"))>9E5 and not int(aerenchyma.get("id"))<0:
         InterCid.append(int(aerenchyma.get("id"))) #Cell id starting at 0
     else:
         print('InterCid #'+str(int(aerenchyma.get("id")))+' excluded')
@@ -120,7 +138,7 @@ Xylem_pieces=False
 if float(etree.parse(dir + Project + inputs + Geom).getroot().xpath('Xylem_pieces')[0].get("flag"))==1:
     Xylem_pieces=True
 t1 = time.perf_counter()
-print(t1-t0, "seconds process time")
+# print(t1-t0, "seconds process time")
 
 #Import hormone properties
 Degrad1=float(etree.parse(dir + Project + inputs + Horm).getroot().xpath('Hormone_movement/Degradation_constant_H1')[0].get("value")) #Hormone 1 degradation constant (mol degraded / mol-day)
@@ -154,7 +172,7 @@ Walls_loop = rootelt.xpath('cells/cell/walls/wall') #Walls_loop contains the ind
 Walls_PD = rootelt.xpath('walls/wall')
 Cells_loop=rootelt.xpath('cells/cell') #Cells_loop contains the cell attributes
 newpath=dir+Project+Output_path+Plant+'/'
-print('Outputs in '+newpath)
+# print('Outputs in '+newpath)
 if not os.path.exists(newpath):
     os.makedirs(newpath)
 
@@ -162,10 +180,13 @@ if not os.path.exists(newpath):
 G = nx.Graph() #Full network
 
 #Creates wall & junction nodes
-print('Creating network nodes')
+# print('Creating network nodes')
 t0 = time.perf_counter()
 Nwalls=len(points)
 Ncells=len(Cells_loop)
+
+# print(Ncells)
+
 NwallsJun=Nwalls #Will increment at each new junction node
 Junction_pos={}
 Junction2Wall={}
@@ -362,10 +383,10 @@ Nxyl=len(listxyl)
 position=nx.get_node_attributes(G,'position') #Updates nodes XY positions (micrometers)
 
 t1 = time.perf_counter()
-print(t1-t0, "seconds process time")
+# print(t1-t0, "seconds process time")
 
 #add Edges
-print('Creating network connections')
+# print('Creating network connections')
 t0 = time.perf_counter()
 lat_dists=zeros((Nwalls,1))
 Nmb=0 #Total number of membranes
@@ -457,10 +478,10 @@ else:
     y_grav=nan
 
 t1 = time.perf_counter()
-print(t1-t0, "seconds process time")
+# print(t1-t0, "seconds process time")
 
 #Calculation of a and b parameter for cortex AQP activity radial distribution
-print('Identifying cell layers')
+# print('Identifying cell layers')
 t0 = time.perf_counter()
 #<group id="2" name="epidermis" />      is epidermis
 #<group id="1" name="general" />        is exodermis
@@ -866,11 +887,11 @@ else:
     davg_epi=nan
     perimeter=nan
 t1 = time.perf_counter()
-print(t1-t0, "seconds process time")
+# print(t1-t0, "seconds process time")
 
 #Calculating cell borders accounting for wall thickness
 if Paraview==1 or ParTrack==1:# or Apo_Contagion>0 or Sym_Contagion>0:
-    print('Preparing geometrical properties for Paraview')
+    # print('Preparing geometrical properties for Paraview')
     t0 = time.perf_counter()
     ThickWalls=[] #Was created to display 3D membranes
     nThickWalls=zeros((2*Nwalls,1)) #This will save how many new junction wall ID were already saved in connections to new wall ID (the vector is a little too long)
@@ -970,7 +991,7 @@ if Paraview==1 or ParTrack==1:# or Apo_Contagion>0 or Sym_Contagion>0:
                     r_rel[wid]=min(max(rad_pos,0.00001),1)
         x_rel[wid]=(position[wid][0]-min_x_wall)/(max_x_wall-min_x_wall)
 else:
-    print('Preparing geometrical properties')
+    # print('Preparing geometrical properties')
     t0 = time.perf_counter()
     Wall2Cell=empty((Nwalls,2))
     Wall2Cell[:]=NAN
@@ -1139,14 +1160,14 @@ else:
                             nJunction2Wall2Cell[j-Nwalls]+=1
 
 t1 = time.perf_counter()
-print(t1-t0, "seconds process time")
+# print(t1-t0, "seconds process time")
 
 #######################################
 ##Variables for potential calculation##
 #######################################
 
 #Import Hydraulic data
-print('Importing hydraulic data')
+# print('Importing hydraulic data')
 t0 = time.perf_counter()
 kwrange=etree.parse(dir + Project + inputs + Hydr).getroot().xpath('kwrange/kw')
 kw_barrier_range=etree.parse(dir + Project + inputs + Hydr).getroot().xpath('kw_barrier_range/kw_barrier')
@@ -1209,10 +1230,10 @@ if Kax_source==2:
 Xcontactrange=etree.parse(dir + Project + inputs + Hydr).getroot().xpath('Xcontactrange/Xcontact')
 path_hydraulics=etree.parse(dir + Project + inputs + Hydr).getroot().xpath('path_hydraulics/Output')
 t1 = time.perf_counter()
-print(t1-t0, "seconds process time")
+# print(t1-t0, "seconds process time")
 
 #Import boundary conditions
-print('Importing boundary conditions')
+# print('Importing boundary conditions')
 t0 = time.perf_counter()
 Psi_soil_range=etree.parse(dir + Project + inputs + BC).getroot().xpath('Psi_soil_range/Psi_soil')
 BC_xyl_range=etree.parse(dir + Project + inputs + BC).getroot().xpath('BC_xyl_range/BC_xyl')
@@ -1547,18 +1568,18 @@ if Sym_Contagion==2 and Apo_Contagion==2:
                 for iLayer in range(AxialLayers):
                     soln_C[iLayer*Ntot+jid]=float(junction[iLayer].get('cc1'))
 t1 = time.perf_counter()
-print(t1-t0, "seconds process time")
+# print(t1-t0, "seconds process time")
 
 #Unit changes
 sperd=24.0*3600.0 #(seconds per day)
 cmperm=100.0 #(cm per metre)
 
 #Start the loop of hydraulic properties
-print('Hydraulic properties loop')
+# print('Hydraulic properties loop')
 t0 = time.perf_counter()
 for h in range(Nhydraulics):
-    print('   ')
-    print('Hydraulic network #'+str(h))
+    # print('   ')
+    # print('Hydraulic network #'+str(h))
     newpath=dir+Project+Output_path+Plant+'/'+path_BC+path_hydraulics[h].get("path")
     if not os.path.exists(newpath):
         os.makedirs(newpath)
@@ -1678,7 +1699,7 @@ for h in range(Nhydraulics):
         else:
             AxialLayers=int(Nlayers[iMaturity])
             MaturL=zeros((AxialLayers,1))
-            Barrier=int(Maturityrange[iMaturity].get("Barrier")) #Apoplastic barriers (0: No apoplastic barrier, 1:Endodermis radial walls, 2:Endodermis with passage cells, 3: Endodermis full, 4: Endodermis full and exodermis radial walls)
+            Barrier=int(Maturityrange[iMaturity].get("Barrier")) #Apoplastic barriers (0: No apoplastic barrier, 1:Endodermis radial walls, 2:Endodermis with passage cells, 3: Endodermis full, 4: Endodermis full and exodermis radial walls, 5: Endodermis and exodermis radial walls, 6: Exodermis full and endodermis radial walls), 7: Exodermis radial walls
             BarriersL=Barrier*ones((AxialLayers,1))
             height=int(Maturityrange[iMaturity].get("height")) #Cell length in the axial direction (microns)
             AxialLayers=int(Maturityrange[iMaturity].get("Nlayers")) #Total number of stacked cross-sections at this maturity level
@@ -1697,7 +1718,7 @@ for h in range(Nhydraulics):
         
         #Scenarios concern boundary conditions only
         count=0
-        print('Scenario #'+str(count))
+        # print('Scenario #'+str(count))
         
         #Soil, xylem, and phloem pressure potentials
         Psi_xyl[1][iMaturity][count]=float(BC_xyl_range[count].get("pressure_prox")) #Xylem pressure potential at proximal end (hPa)
@@ -1946,10 +1967,13 @@ for h in range(Nhydraulics):
         #kw_barrier = kw/10.0
         if PileUp==2:
             kws_endo_endo=ones((Nmaturity))*kw
-            kws_endo_endo[Barriers>0]=kw_barriers[Barriers>0,0]
+            kws_endo_endo[np.logical_and(Barriers>0,Barriers<7)]=kw_barriers[np.logical_and(Barriers>0,Barriers<7),0]
             kws_puncture=ones((Nmaturity))*kw
             kws_exo_exo=ones((Nmaturity))*kw
             kws_exo_exo[Barriers>3]=kw_barriers[Barriers>3,0]
+            kws_exo_epi=ones((Nmaturity))*kw
+            kws_exo_epi[Barriers==6]=kw_barriers[Barriers==6,1]
+            kws_exo_cortex=kws_exo_epi
             kws_cortex_cortex=ones((Nmaturity))*kw
             kws_endo_peri=ones((Nmaturity))*kw
             kws_endo_peri[np.logical_and(Barriers>1,Barriers<5)]=kw_barriers[np.logical_and(Barriers>1,Barriers<5),1]
@@ -1961,6 +1985,8 @@ for h in range(Nhydraulics):
                 kw_endo_endo=kw
                 kw_puncture=kw
                 kw_exo_exo=kw #(cm^2/hPa/d) hydraulic conductivity of the suberised walls between exodermis cells
+                kw_exo_epi=kw
+                kw_exo_cortex=kw
                 kw_cortex_cortex=kw
                 kw_endo_peri=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
                 kw_endo_cortex=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
@@ -1968,6 +1994,8 @@ for h in range(Nhydraulics):
             elif Barrier==1: #Endodermis radial walls
                 kw_endo_endo=kw_barrier[0,0]
                 kw_exo_exo=kw #(cm^2/hPa/d) hydraulic conductivity of the suberised walls between exodermis cells
+                kw_exo_epi=kw
+                kw_exo_cortex=kw
                 kw_cortex_cortex=kw
                 kw_endo_peri=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
                 kw_endo_cortex=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
@@ -1975,6 +2003,8 @@ for h in range(Nhydraulics):
             elif Barrier==2: #Endodermis with passage cells
                 kw_endo_endo=kw_barrier[0,0]
                 kw_exo_exo=kw #(cm^2/hPa/d) hydraulic conductivity of the suberised walls between exodermis cells
+                kw_exo_epi=kw
+                kw_exo_cortex=kw
                 kw_cortex_cortex=kw
                 kw_endo_peri=kw_barrier[0,1] #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
                 kw_endo_cortex=kw_barrier[0,1] #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
@@ -1982,6 +2012,8 @@ for h in range(Nhydraulics):
             elif Barrier==3: #Endodermis full
                 kw_endo_endo=kw_barrier[0,0]
                 kw_exo_exo=kw #(cm^2/hPa/d) hydraulic conductivity of the suberised walls between exodermis cells
+                kw_exo_epi=kw
+                kw_exo_cortex=kw
                 kw_cortex_cortex=kw
                 kw_endo_peri=kw_barrier[0,1] #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
                 kw_endo_cortex=kw_barrier[0,1] #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
@@ -1989,13 +2021,53 @@ for h in range(Nhydraulics):
             elif Barrier==4: #Endodermis full and exodermis radial walls
                 kw_endo_endo=kw_barrier[0,0]
                 kw_exo_exo=kw_barrier[0,0] #(cm^2/hPa/d) hydraulic conductivity of the suberised walls between exodermis cells
+                kw_exo_epi=kw
+                kw_exo_cortex=kw
                 kw_cortex_cortex=kw
                 kw_endo_peri=kw_barrier[0,1] #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
                 kw_endo_cortex=kw_barrier[0,1] #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
                 kw_passage=kw_barrier[0,1] #(cm^2/hPa/d) hydraulic conductivity of passage cells tangential walls
-            elif Barrier==5:
+            elif Barrier==5: # Endodermal & exodermal Casparian strips
                 kw_endo_endo=kw_barrier[0,0]
                 kw_exo_exo=kw_barrier[0,0] #(cm^2/hPa/d) hydraulic conductivity of the suberised walls between exodermis cells
+                kw_exo_epi=kw
+                kw_exo_cortex=kw
+                kw_cortex_cortex=kw
+                kw_endo_peri=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
+                kw_endo_cortex=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
+                kw_passage=kw #(cm^2/hPa/d) hydraulic conductivity of passage cells tangential walls
+            elif Barrier==6: #Exodermis full and endodermis radial walls
+                kw_endo_endo=kw_barrier[0,0]
+                kw_exo_exo=kw_barrier[0,0] #(cm^2/hPa/d) hydraulic conductivity of the suberised walls between exodermis cells
+                kw_exo_epi=kw_barrier[0,1]
+                kw_exo_cortex=kw_barrier[0,1]
+                kw_cortex_cortex=kw
+                kw_endo_peri=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
+                kw_endo_cortex=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
+                kw_passage=kw #(cm^2/hPa/d) hydraulic conductivity of passage cells tangential walls
+            elif Barrier==7: #Exodermis radial walls
+                kw_endo_endo=kw
+                kw_exo_exo=kw_barrier[0,0] #(cm^2/hPa/d) hydraulic conductivity of the suberised walls between exodermis cells
+                kw_exo_epi=kw
+                kw_exo_cortex=kw
+                kw_cortex_cortex=kw
+                kw_endo_peri=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
+                kw_endo_cortex=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
+                kw_passage=kw #(cm^2/hPa/d) hydraulic conductivity of passage cells tangential walls
+            elif Barrier==8: #Exodermis full suberized and endodermis full suberized
+                kw_endo_endo=kw_barrier[0,0]
+                kw_exo_exo=kw_barrier[0,0] #(cm^2/hPa/d) hydraulic conductivity of the suberised walls between exodermis cells
+                kw_exo_epi=kw_barrier[0,1]
+                kw_exo_cortex=kw_barrier[0,1]
+                kw_cortex_cortex=kw
+                kw_endo_peri=kw_barrier[0,1] #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
+                kw_endo_cortex=kw_barrier[0,1] #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
+                kw_passage=kw #(cm^2/hPa/d) hydraulic conductivity of passage cells tangential walls
+            elif Barrier==9: #Lignin Cap
+                kw_endo_endo=kw_barrier[0,0]
+                kw_exo_exo=kw_barrier[0,0] #(cm^2/hPa/d) hydraulic conductivity of the suberised walls between exodermis cells
+                kw_exo_epi=kw_barrier[0,1]
+                kw_exo_cortex=kw
                 kw_cortex_cortex=kw
                 kw_endo_peri=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
                 kw_endo_cortex=kw #(cm^2/hPa/d) hydraulic conductivity of the walls between endodermis and pericycle cells
@@ -2048,7 +2120,7 @@ for h in range(Nhydraulics):
         ######################
         ##Filling the matrix##
         ######################
-        print('Filling matrix_W.2 & matrix_C.2')
+        # print('Filling matrix_W.2 & matrix_C.2')
         t00 = time.perf_counter()  #Lasts about 65 sec in the 24mm root
         if sparseM==1:
             if PileUp==2:
@@ -2341,6 +2413,7 @@ for h in range(Nhydraulics):
                     for cid in listsieve:
                         K_axial[cid]=cellarea[cid-NwallsJun]**2/(8*math.pi*height*1.0E-05/3600/24)*1.0E-12 #(micron^4/micron)->(cm^3) & (1.0E-3 Pa.s)->(1.0E-05/3600/24 hPa.d) 
             else:
+                K_xyl_spec=0.0
                 if Kax_source==2:
                     for K_sieve in K_sieve_range:
                         cellnumber=int(K_sieve.get("id"))
@@ -2757,7 +2830,7 @@ for h in range(Nhydraulics):
                                 #if jmb<=10:
                                 #    print(jmb,'Kmb',K,'wid',i,'cid',j-NwallsJun)
                                 jmb+=1
-                        elif not G.node[j]['cgroup']==3: #Not endodermis
+                        elif (not G.node[j]['cgroup']==3) and (not G.node[j]['cgroup']==1): #Not endodermis and not exodermis
                             if PileUp==2:
                                 iLayer=0
                                 for iM in range(Nmaturity):
@@ -2777,6 +2850,42 @@ for h in range(Nhydraulics):
                                     K = 1.00E-16 #0?
                                 else:
                                     K = 1/(1/(kwi[i]/(thickness/2*1.0E-04))+1/(kmb+kaqp))*1.0E-08*(height+eattr['dist'])*eattr['length']
+                                Kmb[jmb]=K
+                                #if jmb<=10:
+                                #    print(jmb,'K init',K,'wid',i,'cid',j-NwallsJun)
+                                jmb+=1
+                        elif G.node[j]['cgroup']==1: #Exodermis
+                            if PileUp==2:
+                                iLayer=0
+                                for iM in range(Nmaturity):
+                                    if count_epi>0: #wall between exodermis and epidermis
+                                        kw_temp = kws_exo_epi[iM]
+                                    elif count_exo>=2: #radial wall between exodermis cells
+                                        kw_temp = min(kwi[i,iM],kws_exo_epi[iM])
+                                    else:#wall between exodermis and cortex
+                                        kw_temp = kws_exo_cortex[iM]
+                                    kaqp=kaqpi[j-NwallsJun,iM]
+                                    #Calculating each conductance
+                                    if kw_temp==0.0 or kaqp==0.0: # kaqp==0 in case of air-filled intercellular space
+                                        K[iLayer:iLayer+int(Nlayers[iM])] = 1.00E-16 #0?
+                                    else:
+                                        K[iLayer:iLayer+int(Nlayers[iM])] = 1/(1/(kw_temp/(thickness/2*1.0E-04))+1/(kmb+kaqp))*1.0E-08*(heights[iLayer]+eattr['dist'])*eattr['length']
+                                    Kmb[jmb,iM]=K[iLayer]
+                                    iLayer+=int(Nlayers[iM])
+                                jmb+=1
+                            else:
+                                if count_epi>0: #wall between exodermis and epidermis
+                                    kw_temp = kw_exo_epi
+                                elif count_exo>=2: #radial wall between exodermis cells
+                                    kw_temp = min(kwi[i],kw_exo_epi)
+                                else:#wall between exodermis and cortex
+                                    kw_temp = kw_exo_cortex 
+                                kaqp=kaqpi[j-NwallsJun]
+                                #Calculating each conductance
+                                if kw_temp==0.0 or kaqp==0.0: # kaqp==0 in case of air-filled intercellular space
+                                    K = 1.00E-16 #0?
+                                else:
+                                    K = 1/(1/(kw_temp/(thickness/2*1.0E-04))+1/(kmb+kaqp))*1.0E-08*(height+eattr['dist'])*eattr['length']
                                 Kmb[jmb]=K
                                 #if jmb<=10:
                                 #    print(jmb,'K init',K,'wid',i,'cid',j-NwallsJun)
@@ -3288,13 +3397,13 @@ for h in range(Nhydraulics):
                 rhs = rhs_s*Psi_soil[0][count]
         
         t01 = time.perf_counter()
-        print(t01-t00, "seconds process time to fill matrix_W.2 & matrix_C.2")
+        # print(t01-t00, "seconds process time to fill matrix_W.2 & matrix_C.2")
         
         ##################################################
         ##Solve Doussan equation, results in soln matrix##
         ##################################################
         
-        print("Solving water flow")
+        # print("Solving water flow")
         t00 = time.perf_counter()  #Lasts about 35 sec in the 24mm root
 
         if sparseM==1:
@@ -3306,7 +3415,7 @@ for h in range(Nhydraulics):
             verif1=np.allclose(np.dot(matrix_W,soln),rhs)
         
         t01 = time.perf_counter()
-        print(t01-t00, "seconds process time to solve water flow")
+        # print(t01-t00, "seconds process time to solve water flow")
         
         #Removing xylem and phloem BC terms
         if XylOK==1:
@@ -3416,13 +3525,13 @@ for h in range(Nhydraulics):
                 kr_tot[iMaturity][0]=Q_tot[iMaturity][0]/(Psi_soil[0][0]-Psi_sieve_prox)/perimeter/Totheight/1.0E-04
             else:
                 print('Error: Scenario 0 should have proximal phloem pressure or flux boundary conditions in the elongation zone')
-        print("Flow rates per unit root length: soil ",(Q_tot[iMaturity][0]/Totheight/1.0E-04),"cm^2/d, xylem ",((sum(Q_xyl[0])-sum(Q_xyl[1]))/Totheight/1.0E-04),"cm^2/d, phloem ",(sum(Q_sieve)/(Totheight)/1.0E-04),"cm^2/d")
-        print("Flow rates: soil ",(Q_tot[iMaturity][0]),"cm^3/d, xylem ",((sum(Q_xyl[0])-sum(Q_xyl[1]))),"cm^3/d, phloem ",(sum(Q_sieve)),"cm^3/d")
-        print("Mass balance error:",(Q_tot[iMaturity][0]+sum(Q_xyl[0])-sum(Q_xyl[1])+sum(Q_sieve[0])-sum(Q_sieve[1])),"cm^3/d")
-        if PileUp==2:
-            print("Radial conductivity:",kr_tot[iMaturity][0],"cm/hPa/d, Barriers:",Barriers,", stack height: ",Totheight," microns")
-        else:
-            print("Radial conductivity:",kr_tot[iMaturity][0],"cm/hPa/d, Barrier:",Barrier,", stack height: ",Totheight," microns")
+        # print("Flow rates per unit root length: soil ",(Q_tot[iMaturity][0]/Totheight/1.0E-04),"cm^2/d, xylem ",((sum(Q_xyl[0])-sum(Q_xyl[1]))/Totheight/1.0E-04),"cm^2/d, phloem ",(sum(Q_sieve)/(Totheight)/1.0E-04),"cm^2/d")
+        # print("Flow rates: soil ",(Q_tot[iMaturity][0]),"cm^3/d, xylem ",((sum(Q_xyl[0])-sum(Q_xyl[1]))),"cm^3/d, phloem ",(sum(Q_sieve)),"cm^3/d")
+        # print("Mass balance error:",(Q_tot[iMaturity][0]+sum(Q_xyl[0])-sum(Q_xyl[1])+sum(Q_sieve[0])-sum(Q_sieve[1])),"cm^3/d")
+        # if PileUp==2:
+        #     print("Radial conductivity:",kr_tot[iMaturity][0],"cm/hPa/d, Barriers:",Barriers,", stack height: ",Totheight," microns")
+        # else:
+        #     print("Radial conductivity:",kr_tot[iMaturity][0],"cm/hPa/d, Barrier:",Barrier,", stack height: ",Totheight," microns")
         
         if count==iEquil_xyl:
             if XylOK==1 and isnan(Psi_xyl[1][iMaturity][0]):
@@ -3544,7 +3653,7 @@ for h in range(Nhydraulics):
         
         for count in range(1,Nscenarios):
             
-            print('Updating BC for scenario '+str(count))
+            # print('Updating BC for scenario '+str(count))
             t00 = time.perf_counter()
             
             #Initializing the connectivity matrix including boundary conditions
@@ -3579,7 +3688,7 @@ for h in range(Nhydraulics):
                 Apo_connec_flow=zeros((NwallsJun,5),dtype=int) #Flow direction across cell walls, rows correspond to apoplastic nodes, and the listed nodes in each row receive convective flow from the row node
                 nApo_connec_flow=zeros((NwallsJun,1),dtype=int)
             
-            print('Scenario #'+str(count))
+            # print('Scenario #'+str(count))
             
             #Reflection coefficients of membranes (undimensional)
             s_hetero[0][count]=int(Psi_cell_range[count].get("s_hetero")) #0:Uniform, 1: non-uniform, stele twice more permeable to solute, 2: non-uniform, cortex twice more permeable to solute
@@ -3784,12 +3893,12 @@ for h in range(Nhydraulics):
                                             Os_cells[j-NwallsJun,:]=float(Os_sieve[0][count]) #Os_membranes[jmb,:,1]=float(Os_sieve[0][count])
                                         else:
                                             Os_cells[j-NwallsJun,Barriers>0]=float(Os_sieve[0][count]) #Os_membranes[jmb,Barriers>0,1]=float(Os_sieve[0][count])
-                                            Os_cells[j-NwallsJun,Barriers==0]=Os_stele #Os_membranes[jmb,Barriers==0,1]=Os_stele
+                                            Os_cells[j-NwallsJun,Barriers==0]=Os_comp #Os_stele #Os_membranes[jmb,Barriers==0,1]=Os_stele
                                     else:
                                         if XylOK>0 or j in listprotosieve:
                                             Os_cells[j-NwallsJun,:]=float(Os_sieve[0][count]) #Os_membranes[jmb][1]=float(Os_sieve[0][count])
                                         else:
-                                            Os_cells[j-NwallsJun,:]=Os_stele #Os_membranes[jmb][1]=Os_stele
+                                            Os_cells[j-NwallsJun,:]=Os_comp #Os_stele #Os_membranes[jmb][1]=Os_stele
                                 else:
                                     Os_cells[j-NwallsJun,:]=Os_stele
                                 s_membranes[jmb,:]=s_sieve
@@ -3993,8 +4102,8 @@ for h in range(Nhydraulics):
                                     lay_flow1=lay_flow_best1-dlay_flow_best1*(lay_flow_best1-lay_flow_best2)/(dlay_flow_best1-dlay_flow_best2)
                                 else:
                                     lay_flow1=lay_flow2*0.5
-                                u[iLayer,0]=lay_flow1/(Totheight*1.0E-04)/(thickness*1.0E-04)/cell_per_layer[0][0] #Cortex apoplastic water velocity (cm/d) positive inwards
-                                u[iLayer,1]=lay_flow1/(Totheight*1.0E-04)/(thickness*1.0E-04)/cell_per_layer[1][0] #Stele apoplastic water velocity (cm/d) positive inwards
+                                u[iLayer,0]=lay_flow1/(heights[iLayer]*1.0E-04)/(thickness*1.0E-04)/cell_per_layer[0][0] #Cortex apoplastic water velocity (cm/d) positive inwards
+                                u[iLayer,1]=lay_flow1/(heights[iLayer]*1.0E-04)/(thickness*1.0E-04)/cell_per_layer[1][0] #Stele apoplastic water velocity (cm/d) positive inwards
                                 #Then estimate the radial solute distribution from an analytical solution (C(x)=C0+C0*(exp(u*x/D)-1)/(u/D*exp(u*x/D)-exp(u*L/D)+1)
                                 Os_apo_eq_lay[iLayer+iMaturity*AxialLayers,0,count]=0.0
                                 Os_apo_eq_lay[iLayer+iMaturity*AxialLayers,1,count]=0.0
@@ -4052,8 +4161,8 @@ for h in range(Nhydraulics):
                                 print('Success with convergence of solute radial distribution: relative error =',lay_flow_criteria_best,' flow rate =',lay_flow_best1)
                             else:
                                 print('Closest to convergence of solute radial distribution: relative error =',lay_flow_criteria_best,' flow rate =',lay_flow_best1)
-                            u[iLayer,0]=lay_flow_best1/(Totheight*1.0E-04)/(thickness*1.0E-04)/cell_per_layer[0][0] #Cortex (cm/d)
-                            u[iLayer,1]=lay_flow_best1/(Totheight*1.0E-04)/(thickness*1.0E-04)/cell_per_layer[1][0] #Stele (cm/d)
+                            u[iLayer,0]=lay_flow_best1/(heights[iLayer]*1.0E-04)/(thickness*1.0E-04)/cell_per_layer[0][0] #Cortex (cm/d)
+                            u[iLayer,1]=lay_flow_best1/(heights[iLayer]*1.0E-04)/(thickness*1.0E-04)/cell_per_layer[1][0] #Stele (cm/d)
                             tot_flow_prox+=lay_flow_best1
                             ##Then estimate osmotic potentials in radial walls later on: C(x)=C0+C0*(exp(u*x/D)-1)/(u/D*exp(u*x/D)-exp(u*L/D)+1)
                         Os_apo_eq[iMaturity,0,count]=0.0
@@ -4621,11 +4730,11 @@ for h in range(Nhydraulics):
                                             nOsCellLayer[row,:,count]+=1
                                         else:
                                             Os_cells[j-NwallsJun,Barriers>0]=float(Os_sieve[0][count])
-                                            Os_cells[j-NwallsJun,Barriers==0]=Os_stele
+                                            Os_cells[j-NwallsJun,Barriers==0]=Os_comp #Os_stele
                                             #Os_membranes[jmb,Barriers>0,1]=float(Os_sieve[0][count])
                                             #Os_membranes[jmb,Barriers==0,1]=Os_stele
                                             OsCellLayer[row,Barriers>0,count]+=float(Os_sieve[0][count])
-                                            OsCellLayer[row,Barriers==0,count]+=Os_stele
+                                            OsCellLayer[row,Barriers==0,count]+=Os_comp #Os_stele
                                             nOsCellLayer[row,:,count]+=1
                                     else:
                                         if XylOK>0 or j in listprotosieve:
@@ -4634,9 +4743,9 @@ for h in range(Nhydraulics):
                                             OsCellLayer[row][iMaturity][count]+=float(Os_sieve[0][count])
                                             nOsCellLayer[row][iMaturity][count]+=1
                                         else:
-                                            Os_cells[j-NwallsJun,0]=Os_stele
+                                            Os_cells[j-NwallsJun,0]=Os_comp #Os_stele
                                             #Os_membranes[jmb][1]=Os_stele
-                                            OsCellLayer[row][iMaturity][count]+=Os_stele
+                                            OsCellLayer[row][iMaturity][count]+=Os_comp #Os_stele
                                             nOsCellLayer[row][iMaturity][count]+=1
                                 else:
                                     Os_cells[j-NwallsJun,:]=Os_stele
@@ -4960,13 +5069,13 @@ for h in range(Nhydraulics):
                             i+=1
             
             t01 = time.perf_counter()
-            print(t01-t00, 'seconds process time to adjusting BC for scenario '+str(count))
+            # print(t01-t00, 'seconds process time to adjusting BC for scenario '+str(count))
             
             ##################################################
             ##Solve Doussan equation, results in soln matrix##
             ##################################################
             
-            print("Solving water flow")
+            # print("Solving water flow")
             t00 = time.perf_counter() #Lasts about 45 sec in the 24mm root
             if sparseM==1:
                 soln = spsolve(matrix_W2.tocsr(),rhs)
@@ -4975,11 +5084,11 @@ for h in range(Nhydraulics):
                 #Verification that computation was correct
                 verif1=np.allclose(np.dot(matrix_W,soln),rhs)
             t01 = time.perf_counter()
-            print(t01-t00, 'seconds process time to solve water flow for scenario '+str(count))
+            # print(t01-t00, 'seconds process time to solve water flow for scenario '+str(count))
             
             if not matrix_analysis==1:
                 #Removing Xylem and phloem BC terms in "matrix" in case they would change in the next scenario
-                print("Removing axial convective components from matrix W")
+                # print("Removing axial convective components from matrix W")
                 t00 = time.perf_counter()
                 if XylOK>0:
                     if not isnan(Psi_xyl[1][iMaturity][count]): #Pressure xylem BC
@@ -5055,7 +5164,7 @@ for h in range(Nhydraulics):
                     #                matrix_ApoC[ind][ind]+=Q
             
             t01 = time.perf_counter()
-            print(t01-t00, 'seconds process time to remove axial convective components from matrices W and C')
+            # print(t01-t00, 'seconds process time to remove axial convective components from matrices W and C')
             
             for ind in Borderjunction:
                 for iLayer in range(AxialLayers):
@@ -5191,18 +5300,18 @@ for h in range(Nhydraulics):
                         for cid in listprotosieve:
                             Psi_sieve[1][iMaturity][count]+=soln[-Ntot+cid]/Nprotosieve #Average of protophloem water pressures
             
-            print("Uptake rate per unit root length: soil ",(sum(Q_soil)/(Totheight)/1.0E-04),"cm^2/d, xylem ",((sum(Q_xyl[0])-sum(Q_xyl[1]))/(Totheight)/1.0E-04),"cm^2/d, phloem ",((sum(Q_sieve[0])-sum(Q_sieve[1]))/(Totheight)/1.0E-04),"cm^2/d, elongation ",(sum(Q_elong)/(Totheight)/1.0E-04),"cm^2/d")
-            print("Uptake rate: soil ",(sum(Q_soil)),"cm^3/d, xylem ",((sum(Q_xyl[0])-sum(Q_xyl[1]))),"cm^3/d, phloem ",((sum(Q_sieve[0])-sum(Q_sieve[1]))),"cm^3/d, elongation ",(sum(Q_elong)),"cm^3/d")
-            if not isnan(sum(Q_sieve[0])-sum(Q_sieve[1])):
-                print("Mass balance error:",(sum(Q_soil)+sum(Q_xyl[0])-sum(Q_xyl[1])+sum(Q_sieve[0])-sum(Q_sieve[1])+sum(Q_elong)),"cm^3/d")
-            else:
-                print("Mass balance error:",(sum(Q_soil)+sum(Q_xyl[0])-sum(Q_xyl[1])+sum(Q_elong)),"cm^3/d")
+            # print("Uptake rate per unit root length: soil ",(sum(Q_soil)/(Totheight)/1.0E-04),"cm^2/d, xylem ",((sum(Q_xyl[0])-sum(Q_xyl[1]))/(Totheight)/1.0E-04),"cm^2/d, phloem ",((sum(Q_sieve[0])-sum(Q_sieve[1]))/(Totheight)/1.0E-04),"cm^2/d, elongation ",(sum(Q_elong)/(Totheight)/1.0E-04),"cm^2/d")
+            # print("Uptake rate: soil ",(sum(Q_soil)),"cm^3/d, xylem ",((sum(Q_xyl[0])-sum(Q_xyl[1]))),"cm^3/d, phloem ",((sum(Q_sieve[0])-sum(Q_sieve[1]))),"cm^3/d, elongation ",(sum(Q_elong)),"cm^3/d")
+            # if not isnan(sum(Q_sieve[0])-sum(Q_sieve[1])):
+            #     print("Mass balance error:",(sum(Q_soil)+sum(Q_xyl[0])-sum(Q_xyl[1])+sum(Q_sieve[0])-sum(Q_sieve[1])+sum(Q_elong)),"cm^3/d")
+            # else:
+            #     print("Mass balance error:",(sum(Q_soil)+sum(Q_xyl[0])-sum(Q_xyl[1])+sum(Q_elong)),"cm^3/d")
             
             #################################################################
             ##Calul of Fluxes between nodes and Creating the edge_flux_list##
             #################################################################
             
-            print("Creating a list of water fluxes through walls, membranes and PD, & adjust matrix_C")
+            # print("Creating a list of water fluxes through walls, membranes and PD, & adjust matrix_C")
             t00 = time.perf_counter() #Lasts about 973 sec in the 24mm root
             
             #Filling the fluxes list
@@ -5894,7 +6003,7 @@ for h in range(Nhydraulics):
                 if test_mass_balance==1:
                     for i in range(AxialLayers*Ntot):
                         temp=sum(matrix_C2[i])
-                        print('mass_balance pre-BC',i,temp)
+                        # print('mass_balance pre-BC',i,temp)
                 
                 rhs_C = np.zeros((AxialLayers*Ntot),dtype=dp) #Initializing the right-hand side matrix of solute apoplastic concentrations
                 
@@ -6247,7 +6356,7 @@ for h in range(Nhydraulics):
                                 i+=1
             
             t01 = time.perf_counter()
-            print(t01-t00, 'seconds process time to list water fluxes and adjust matrix_C')
+            # print(t01-t00, 'seconds process time to list water fluxes and adjust matrix_C')
             
             ######################################################
             #Solving stationary & transient solute concentrations#
@@ -6276,7 +6385,7 @@ for h in range(Nhydraulics):
                             i+=1
                         
                         #Solving steady-state apoplastic & symplastic concentrations
-                        print("Solving steady-state tracer flow & printing outputs")
+                        # print("Solving steady-state tracer flow & printing outputs")
                         t00 = time.perf_counter()
                         
                         soln_C = empty((Ntot*AxialLayers,1))
@@ -6519,7 +6628,7 @@ for h in range(Nhydraulics):
                     
                     if not (Transient_tracer and Ini_cond==2):
                         t01 = time.perf_counter()
-                        print(t01-t00, 'seconds process time to solve steady-state tracer flow & write outputs')
+                        # print(t01-t00, 'seconds process time to solve steady-state tracer flow & write outputs')
                     
                     if Transient_tracer:
                         #Preparing xml saving of tracer transient flow
@@ -6685,7 +6794,7 @@ for h in range(Nhydraulics):
                                 soln_C_transi0=soln_C_transi1
                                 t01 = time.perf_counter()
                                 i+=1
-                                print(t01-t00, 'seconds process time, progress '+str(100*i/switch_nt)+'%')
+                                # print(t01-t00, 'seconds process time, progress '+str(100*i/switch_nt)+'%')
                             t_tracer+=switch_dur
                         
                         #Time loop
@@ -7098,7 +7207,10 @@ for h in range(Nhydraulics):
                                             myfile.write("LOOKUP_TABLE default \n")
                                             for ThickWallNode in ThickWalls:
                                                 cellnumber1=ThickWallNode[2]-NwallsJun
-                                                myfile.write(str(float(soln_C_transi0[int(cellnumber1+NwallsJun)+iLayer*Ntot])) + " \n")
+                                                cc_print=soln_C_transi0[int(cellnumber1+NwallsJun)+iLayer*Ntot]
+                                                if abs(cc_print)<1.0E-20:
+                                                    cc_print=0.0
+                                                myfile.write(str(float(cc_print)) + " \n")
                                         myfile.close()
                                         text_file.close()
                                     
@@ -7153,7 +7265,10 @@ for h in range(Nhydraulics):
                                             j=0
                                             for PolygonX in Wall2NewWallX:
                                                 for id1 in range(int(nWall2NewWallX[j])):
-                                                    Newsoln_C[int(PolygonX[id1])]=soln_C_transi0[j+iLayer*Ntot]
+                                                    cc_print=soln_C_transi0[j+iLayer*Ntot]
+                                                    if abs(cc_print)<1.0E-20:
+                                                        cc_print=0.0
+                                                    Newsoln_C[int(PolygonX[id1])]=cc_print
                                                 j+=1
                                             for i in range(len(ThickWallsX)):
                                                 myfile.write(str(float(Newsoln_C[i])) + " \n")
@@ -8610,10 +8725,16 @@ for h in range(Nhydraulics):
                 for j in range(int(r_discret[0])):
                     if NWallLayer[j][iMaturity][i]>1:
                         if AxialLayers>1:
-                            temp=str(list(PsiWallLayer[j,TopLayer-AxialLayers:TopLayer,i]/NWallLayer[j,iMaturity,i]))
-                            myfile.write(temp[1:-1]+" \n")
+                            if NWallLayer[j,iMaturity,i]>0:
+                                temp=str(list(PsiWallLayer[j,TopLayer-AxialLayers:TopLayer,i]/NWallLayer[j,iMaturity,i]))
+                                myfile.write(temp[1:-1]+" \n")
+                            else:
+                                myfile.write("nan \n")
                         else:
-                            myfile.write(str(float(PsiWallLayer[j,TopLayer-AxialLayers:TopLayer,i]/NWallLayer[j,iMaturity,i]))+" \n")
+                            if NWallLayer[j,iMaturity,i]>0:
+                                myfile.write(str(float(PsiWallLayer[j,TopLayer-AxialLayers:TopLayer,i]/NWallLayer[j,iMaturity,i]))+" \n")
+                            else:
+                                myfile.write("nan \n")
                     else:
                         if AxialLayers>1:
                             temp=str(list(PsiWallLayer[j,TopLayer-AxialLayers:TopLayer,i]))

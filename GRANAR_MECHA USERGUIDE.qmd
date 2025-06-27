@@ -24,7 +24,10 @@ for(pk in libs) {
 }
 
 # Load utilitarian functions
-source("functions.R")
+source("src/functions.R")
+source("src/update_params.R")
+source("src/update_MECHA_inputs.R")
+source("src/MECHA_inputs.R")
 ```
 
 # What is GRANAR?
@@ -157,12 +160,64 @@ Set up steps to run it in local :
     `conda install pip`\
     `pip install networkx==1.9.1`
 
-By default, MECHA loads the cross section named *current_root.xml* in the *cellsetdata* folder, so we need to copy the anatomy we created to that folder ;
+By default, MECHA loads the cross section named *current_root.xml* in the *cellsetdata* folder, so we need to copy the anatomy we created to that folder
+
+## Load and setup MECHA params
+
+```{r}
+# Update parameters
+MECHA_path   <- "src/MECHA/"                              # Path to MECHA file directory
+project_path <- "Projects/granar/"                          # Path to MECHA projects
+input_path   <- paste0("in/")                 # Path where MECHA will take parameters  
+output_path  <- paste0("out/")                       # Path where MECHA will store outputs
+read_path    <- paste0(MECHA_path, project_path, input_path) # Path where MECHA_input_list will be created from XML. Set template if different.
+
+# LOAD XML AS A BIG LIST
+
+# Read XML input files as templates
+MECHA_inputs_list <- read_MECHA_inputs(
+  read_path, 
+  names = list(
+    General    = "General.xml",
+    Hydraulics = "Hydraulics.xml",
+    Hormones   = "Hormones_Carriers.xml",
+    BC         = "BC.xml",
+    Geometry   = "Geometry.xml")
+  ) 
+```
+
+## Modify MECHA params by hand
+
+MECHA has a lot of parameters, most of them have a standard value coming from literature.
+
+You can modify at will the parameters , like such :
+
+```{r}
+# MODIFY PARAMETERS BY HAND
+MECHA_inputs_list$Hydraulics$param$kAQPrange$kAQP$value <- 0.001 # Default value : 1e-4 cm/hPa/d 
+
+# WRITE XML's
+write_MECHA_inputs(input_list = MECHA_inputs_list, 
+                   path = paste0(MECHA_path, project_path, input_path),
+                   names = list(
+                     General    = "General.xml",
+                     Hydraulics = "Hydraulics.xml",
+                     Hormones   = "Hormones_Carriers.xml",
+                     BC         = "BC.xml",
+                     Geometry   = "Geometry.xml")
+                   )
+```
+
+## Set up anatomy to send to MECHA
 
 ```{r, eval = F}
 anatomy_file <- "Wheat.xml"
-file.copy(from = paste0("Anatomies/", anatomy_file),to = "MECHA/cellsetdata/", overwrite = T)
-file.rename(paste0("MECHA/cellsetdata/", anatomy_file), "MECHA/cellsetdata/current_root.xml")
+
+file.copy(from = paste0("Anatomies/", anatomy_file),
+          to = "src/MECHA/cellsetdata/", overwrite = T)
+
+file.rename(paste0("src/MECHA/cellsetdata/", anatomy_file), 
+            to = "src/MECHA/cellsetdata/current_root.xml")
 
 sim1 <- get_root_section(path = paste0("Anatomies/", anatomy_file))
 ggplot(sim1) +
@@ -178,6 +233,8 @@ ggplot(sim1) +
           axis.title.x=element_blank(),
           axis.title.y=element_blank())
 ```
+
+## Run MECHA
 
 By default, MECHA can simulate different scenarios : \*
 
@@ -209,8 +266,8 @@ Let's run MECHA :
 use_condaenv("GRANAR-MECHA")
 sys <- import("sys", convert=T)
 
-unlink("MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/", force = T)
-try(py_run_file("MECHA/MECHA_example.py"))
+unlink("src/MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/", force = T)
+try(py_run_file("src/MECHA/MECHA_example.py"))
 ```
 
 We can visualise the ratio of symplastiv vs. apoplastic flows for each scenario :

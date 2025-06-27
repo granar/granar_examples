@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+  <OS value="Windows"/>
+  <Output path="out/Tomato/"/>
+  <Paraview value="1" WallFlux="1" MembraneFlux="1" PlasmodesmataFlux="0" WallPot="1" CellPot="1"/>
+  <ParTrack value="0"/>
+  <Sym_Contagion value="0"/>
+  <Apo_Contagion value="0"/>
+  <color_threshold value="1"/>
+  <thickness_disp value="2"/>
+  <thicknessJunction_disp value="2.5"/>
+  <radiusPlasmodesm_disp value="4"/>
+  <UniXwalls value="0"/>
+  <sparse value="1"/>
+</properties>
