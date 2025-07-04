@@ -38,8 +38,7 @@ GRANAR stands for Generator of Root ANAtomy in R. The GRANAR model is able to ge
 
 ## Load functions
 
-GRANAR is available as an R package. The *'granar'* package can be found on [GitHub](https://github.com/granar/granar). 
-You can clone the repository with Github desktop and load all functions :
+GRANAR is available as an R package. The *'granar'* package can be found on [GitHub](https://github.com/granar/granar). You can clone the repository with Github desktop and load all functions :
 
 ```{r GRANAR, include  = T, eval = T}
 # Load GRANAR with local functions
@@ -72,6 +71,7 @@ param1 <- read_param_xml(path = "Params/Wheat_F_Atkinson_2017.xml")
 sim1   <- suppressWarnings(create_anatomy(parameters = param1))
 plot_anatomy(sim1)
 ```
+
 ### Maize with aerenchyma
 
 ```{r}
@@ -80,7 +80,7 @@ sim   <- suppressWarnings(create_anatomy(parameters = param))
 plot_anatomy(sim)
 ```
 
-### Rice 
+### Rice
 
 ```{r}
 param <- read_param_xml(path = "Params/Rice_D_Atkinson_2017.xml")
@@ -88,7 +88,7 @@ sim   <- suppressWarnings(create_anatomy(parameters = param))
 plot_anatomy(sim)
 ```
 
-### Arabodopsis 
+### Arabodopsis
 
 ```{r}
 param <- read_param_xml(path = "Params/Arabidopsis.xml")
@@ -99,7 +99,7 @@ plot_anatomy(sim)
 ### Primary growth dicot (tomato)
 
 ```{r run GRANAR2, results=F, message=FALSE}
-param2 <- read_param_xml(path = "Params/Tomato_primary.xml")
+param2 <- read_param_xml(path = "src/Params/Tomato_primary.xml")
 sim2 <- suppressWarnings(create_anatomy(parameters = param2))
 plot_anatomy(sim2)
 ```
@@ -107,7 +107,7 @@ plot_anatomy(sim2)
 ### Secondary growth dicot (tomato)
 
 ```{r run GRANAR3, results=F, message=FALSE}
-param3 <- read_param_xml(path = "Params/Tomato_secondary.xml")
+param3 <- read_param_xml(path = "src/Params/Tomato_secondary.xml")
 sim3 <- suppressWarnings(create_anatomy(parameters = param3))
 plot_anatomy(sim3)
 ```
@@ -211,7 +211,7 @@ write_MECHA_inputs(input_list = MECHA_inputs_list,
 ## Set up anatomy to send to MECHA
 
 ```{r, eval = F}
-anatomy_file <- "Wheat.xml"
+anatomy_file <- "Tomato_primary.xml"
 
 file.copy(from = paste0("Anatomies/", anatomy_file),
           to = "src/MECHA/cellsetdata/", overwrite = T)
@@ -238,7 +238,7 @@ ggplot(sim1) +
 
 By default, MECHA can simulate different scenarios : \*
 
--   **B0 : [Special case for protophloem] No apoplastic barriers **
+-   **B0 : \[Special case for protophloem\] No apoplastic barriers**
 
 -   **B1 : Endodermal Casparian strip (radial walls)**
 
@@ -270,11 +270,10 @@ unlink("src/MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/", force 
 try(py_run_file("src/MECHA/MECHA_example.py"))
 ```
 
-We can visualise the ratio of symplastiv vs. apoplastic flows for each scenario :
-nb ; Graphs are broken with Secondary Growth scenario
+We can visualise the ratio of symplastiv vs. apoplastic flows for each scenario : nb ; Graphs are broken with Secondary Growth scenario
 
 ```{r, results=F, message=FALSE, warning=FALSE}
-rp <- "MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/"
+rp <- "src/MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/"
 
 Flux1 <- ApoSymp(paste0(rp,"Macro_prop_1,0.txt")) 
 Flux2 <- ApoSymp(paste0(rp,"Macro_prop_2,1.txt")) 
@@ -290,12 +289,12 @@ We can load radial conductivity $k_r$ and axial conductance $K_x$ :
 
 ```{r, message=FALSE}
 # Load Barriers names and IDs
-Barrier_types <- read_xlsx("./MECHA/Barrier_types.xlsx") %>% 
+Barrier_types <- read_xlsx("src/MECHA/Barrier_types.xlsx") %>% 
   mutate(ID = as.factor(ID)) %>% 
   mutate(Barrier_name = paste0("En.", Endodermis, " - Ex.", Exodermis))
 
 # Use custom function to load outputs of MECHA
-conds <- load_MECHA_out()
+conds <- load_MECHA_out(path = "src/MECHA/Projects/granar/out/Tomato/Root/Project_Test/results/")
 
 # Process and select the outputs
 conds <- conds %>% 
@@ -324,4 +323,3 @@ ggplot(data = conds) +
   # facet_wrap(~Exodermis) +
   theme(axis.text.x = element_text(angle = 90))
 ```
-
